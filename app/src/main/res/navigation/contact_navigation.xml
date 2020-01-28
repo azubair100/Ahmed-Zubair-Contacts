@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contact_navigation"
+    app:startDestination="@id/listFragment">
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.ahmedzubaircontacts.view.ListFragment"
+        android:label="ListFragment" >
+        <action
+            android:id="@+id/action_listFragment_to_contactDetailsFragment"
+            app:destination="@id/contactDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_listFragment_to_newEditContactFragment"
+            app:destination="@id/newEditContactFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/contactDetailsFragment"
+        android:name="com.example.ahmedzubaircontacts.view.ContactDetailsFragment"
+        android:label="ContactDetailsFragment" >
+        <action
+            android:id="@+id/action_contactDetailsFragment_to_listFragment"
+            app:destination="@id/listFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+        <argument
+            android:name="personId"
+            android:defaultValue="0"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_contactDetailsFragment_to_newEditContactFragment"
+            app:destination="@id/newEditContactFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/newEditContactFragment"
+        android:name="com.example.ahmedzubaircontacts.view.NewEditContactFragment"
+        android:label="NewEditContactFragment" >
+        <argument
+            android:name="personId"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_newEditContactFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+</navigation>

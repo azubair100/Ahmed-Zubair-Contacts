@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Ahmed Zubair Contacts</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="email_required">Email*</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_number_required">Phone Number*</string>
+    <string name="address">Address</string>
+    <string name="error_text">An error occurred!</string>
+    <string name="birthday">Birthday</string>
+    <string name="save">Save</string>
+    <string name="new_contact">New Contact</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="phone_type">Phone Type</string>
+    <string name="email_type">Email Type</string>
+    <string name="field_required">This field is required!</string>
+    <string name="cancel">Cancel</string>
+    <string name="address_type">Address Type</string>
+    <string name="street_name_required">Street Name*</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="zip">Zip</string>
+</resources>
