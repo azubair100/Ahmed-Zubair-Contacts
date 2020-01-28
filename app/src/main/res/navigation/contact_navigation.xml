@@ -30,8 +30,8 @@
             app:exitAnim="@anim/nav_default_exit_anim"/>
         <argument
             android:name="personId"
-            android:defaultValue="0"
-            app:argType="integer"/>
+            android:defaultValue="0L"
+            app:argType="long"/>
         <action
             android:id="@+id/action_contactDetailsFragment_to_newEditContactFragment"
             app:destination="@id/newEditContactFragment"
@@ -44,8 +44,8 @@
         android:label="NewEditContactFragment" >
         <argument
             android:name="personId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="long"
+            android:defaultValue="0L" />
         <action
             android:id="@+id/action_newEditContactFragment_to_listFragment"
             app:destination="@id/listFragment" />

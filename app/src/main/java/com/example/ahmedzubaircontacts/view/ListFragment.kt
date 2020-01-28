@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.ahmedzubaircontacts.R
+import com.example.ahmedzubaircontacts.model.ContactDatabase
+import com.example.ahmedzubaircontacts.model.PersonDAO
 import kotlinx.android.synthetic.main.fragment_list.*
 
 
@@ -40,8 +43,7 @@ class ListFragment : Fragment() {
                                 val action =
                                     ListFragmentDirections.actionListFragmentToNewEditContactFragment()
                                 action.personId = 0
-                                Navigation.findNavController(it).
-                                    navigate(action)
+                                Navigation.findNavController(it).navigate(action)
                             }
                         }
                     }

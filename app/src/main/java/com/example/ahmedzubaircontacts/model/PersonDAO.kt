@@ -2,13 +2,14 @@ package com.example.ahmedzubaircontacts.model
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
 interface PersonDAO {
 
-    @Insert
-    suspend fun insert(person: Person)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(person: Person): Long
 
     @Query("SELECT * FROM person")
     suspend fun getAllPersons(): List<Person>

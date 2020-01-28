@@ -11,5 +11,5 @@ data class Person(
     @ColumnInfo(name = "last_name") val lastName : String?,
     val birthday : String?): Serializable {
 
-    @PrimaryKey(autoGenerate = true) var personId: Int = 0
+    @PrimaryKey(autoGenerate = true) var personId: Long = 0
 }
