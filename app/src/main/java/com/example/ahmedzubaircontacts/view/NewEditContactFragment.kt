@@ -21,7 +21,7 @@ import com.example.ahmedzubaircontacts.model.Address
 import com.example.ahmedzubaircontacts.model.Email
 import com.example.ahmedzubaircontacts.model.Person
 import com.example.ahmedzubaircontacts.model.Phone
-import com.example.ahmedzubaircontacts.view.adapters.ContactDetailsAdapter
+import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -36,9 +36,9 @@ class NewEditContactFragment : Fragment() {
 
     private var personId : Long = 0L
     private lateinit var newContactViewModel: NewContactViewModel
-    private lateinit var contactDetailsAdapterPhone: ContactDetailsAdapter
-    private lateinit var contactDetailsAdapterEmail: ContactDetailsAdapter
-    private lateinit var contactDetailsAdapterAddress: ContactDetailsAdapter
+    private lateinit var newContactAdapterPhone: NewContactAdapter
+    private lateinit var newContactAdapterEmail: NewContactAdapter
+    private lateinit var newContactAdapterAddress: NewContactAdapter
     private var phones = arrayListOf<Phone>()
     private var emails = arrayListOf<Email>()
     private var addresses = arrayListOf<Address>()
@@ -53,16 +53,16 @@ class NewEditContactFragment : Fragment() {
         super.onCreate(savedInstanceState)
         newContactViewModel = ViewModelProviders.of(this).get(NewContactViewModel::class.java)
         retainInstance = true
-        contactDetailsAdapterPhone =
-            ContactDetailsAdapter(
+        newContactAdapterPhone =
+            NewContactAdapter(
                 arrayListOf()
             )
-        contactDetailsAdapterEmail =
-            ContactDetailsAdapter(
+        newContactAdapterEmail =
+            NewContactAdapter(
                 arrayListOf()
             )
-        contactDetailsAdapterAddress =
-            ContactDetailsAdapter(
+        newContactAdapterAddress =
+            NewContactAdapter(
                 arrayListOf()
             )
         /*phones = arrayListOf()
@@ -105,15 +105,15 @@ class NewEditContactFragment : Fragment() {
     private fun setUpRecyclerView(){
         phoneNumberRV.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = contactDetailsAdapterPhone
+            adapter = newContactAdapterPhone
         }
         emailRV.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = contactDetailsAdapterEmail
+            adapter = newContactAdapterEmail
         }
         addressRV.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = contactDetailsAdapterAddress
+            adapter = newContactAdapterAddress
         }
     }
 
@@ -191,7 +191,7 @@ class NewEditContactFragment : Fragment() {
             val number = phoneNumber?.text.toString()
 //            phones.add(Phone(personId, type, number))
             phoneTextDisplay.add("$type: $number")
-            contactDetailsAdapterPhone.updateContactDetailsList(phoneTextDisplay)
+            newContactAdapterPhone.updateContactDetailsList(phoneTextDisplay)
             hideKeyboard()
             dialog.dismiss()
         }
@@ -224,7 +224,7 @@ class NewEditContactFragment : Fragment() {
             val type = emailType?.text.toString()
             val email = emailAddress?.text.toString()
             emailTextDisplay.add("$type: $email")
-            contactDetailsAdapterEmail.updateContactDetailsList(emailTextDisplay)
+            newContactAdapterEmail.updateContactDetailsList(emailTextDisplay)
             hideKeyboard()
             dialog.dismiss()
         }
@@ -264,7 +264,7 @@ class NewEditContactFragment : Fragment() {
             val stateName = state?.text.toString()
             val zipName = zip?.text.toString()
             addressTextDisplay.add("$type: $streetName, $cityName, $stateName $zipName")
-            contactDetailsAdapterAddress.updateContactDetailsList(addressTextDisplay)
+            newContactAdapterAddress.updateContactDetailsList(addressTextDisplay)
             hideKeyboard()
             dialog.dismiss()
 

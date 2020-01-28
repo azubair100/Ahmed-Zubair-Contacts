@@ -14,7 +14,7 @@ interface AddressDAO {
     suspend fun deleteAddress(address: Address)
 
     @Query("SELECT * FROM address WHERE personCreatorId = :personId")
-    suspend fun findAllAddressesByPersonId(personId: Int): List<Address>
+    suspend fun findAllAddressesByPersonId(personId: Long): List<Address>
 
 
 }

@@ -14,5 +14,5 @@ interface PhoneDAO {
     suspend fun deletePhone(phone: Phone)
 
     @Query("SELECT * FROM phone WHERE personCreatorId = :personId")
-    suspend fun findAllPhonesByPersonId(personId: Int): List<Phone>
+    suspend fun findAllPhonesByPersonId(personId: Long): List<Phone>
 }

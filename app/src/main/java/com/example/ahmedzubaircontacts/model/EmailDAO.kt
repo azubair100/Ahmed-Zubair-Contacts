@@ -14,5 +14,5 @@ interface EmailDAO {
     suspend fun deleteEmail(email: Email)
 
     @Query("SELECT * FROM email WHERE personCreatorId = :personId")
-    suspend fun findAllEmailsByPersonId(personId: Int): List<Email>
+    suspend fun findAllEmailsByPersonId(personId: Long): List<Email>
 }
