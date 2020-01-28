@@ -16,4 +16,7 @@ interface PersonDAO {
 
     @Query("SELECT * FROM person WHERE personId = :id")
     suspend fun getPersonById(id: Int): Person
+
+    @Query("SELECT * FROM person WHERE firstName LIKE :search OR lastName LIKE :search")
+    suspend fun searchPersons(search: String): List<Person>
 }

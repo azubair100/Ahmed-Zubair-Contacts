@@ -1,4 +1,4 @@
-package com.example.ahmedzubaircontacts.view
+package com.example.ahmedzubaircontacts.view.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.NewContactDetailRowBinding
-import com.example.ahmedzubaircontacts.view.clicklisteners.ContactDetailsListener
+import com.example.ahmedzubaircontacts.view.clicklisteners.PersonClickListener
 
 class ContactDetailsAdapter(private val list: ArrayList<String>):
-RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>(), ContactDetailsListener{
+RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>(){
 
     fun updateContactDetailsList(newList: List<String>){
         list.clear()
@@ -22,7 +22,9 @@ RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>(), ContactD
         ContactDetailsViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.new_contact_detail_row, parent, false))
+                R.layout.new_contact_detail_row, parent, false
+            )
+        )
 
     override fun getItemCount(): Int = list.size
 
@@ -35,10 +37,6 @@ RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>(), ContactD
             holder.itemView.visibility = View.GONE
         }
 
-    }
-
-    override fun onContactDetailsClicked(view: View) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     class ContactDetailsViewHolder(var view: NewContactDetailRowBinding): RecyclerView.ViewHolder(view.root)

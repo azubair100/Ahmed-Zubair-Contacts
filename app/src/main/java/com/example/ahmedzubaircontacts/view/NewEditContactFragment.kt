@@ -2,7 +2,6 @@ package com.example.ahmedzubaircontacts.view
 
 import android.app.Activity
 import android.app.Dialog
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,6 +21,7 @@ import com.example.ahmedzubaircontacts.model.Address
 import com.example.ahmedzubaircontacts.model.Email
 import com.example.ahmedzubaircontacts.model.Person
 import com.example.ahmedzubaircontacts.model.Phone
+import com.example.ahmedzubaircontacts.view.adapters.ContactDetailsAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -53,9 +53,18 @@ class NewEditContactFragment : Fragment() {
         super.onCreate(savedInstanceState)
         newContactViewModel = ViewModelProviders.of(this).get(NewContactViewModel::class.java)
         retainInstance = true
-        contactDetailsAdapterPhone = ContactDetailsAdapter(arrayListOf())
-        contactDetailsAdapterEmail = ContactDetailsAdapter(arrayListOf())
-        contactDetailsAdapterAddress = ContactDetailsAdapter(arrayListOf())
+        contactDetailsAdapterPhone =
+            ContactDetailsAdapter(
+                arrayListOf()
+            )
+        contactDetailsAdapterEmail =
+            ContactDetailsAdapter(
+                arrayListOf()
+            )
+        contactDetailsAdapterAddress =
+            ContactDetailsAdapter(
+                arrayListOf()
+            )
         /*phones = arrayListOf()
         emails = arrayListOf()
         addresses = arrayListOf()*/
@@ -139,7 +148,7 @@ class NewEditContactFragment : Fragment() {
 
     private fun setUpEditText(){
         saveBtn.isEnabled = false
-        birthdayETI.setOnFocusChangeListener{ _, b -> if (!b) hideKeyboard() }
+//        birthdayETI.setOnFocusChangeListener{ _, b -> if (!b) hideKeyboard() }
 
         if(personId == 0L){
         firstNameETI.addTextChangedListener(object: TextWatcher{
