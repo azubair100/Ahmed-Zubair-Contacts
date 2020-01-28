@@ -10,5 +10,5 @@ data class Person(
     val lastName : String?,
     val birthday : String?): Serializable {
 
-    @PrimaryKey(autoGenerate = true) var personId: Long = 0
+    @PrimaryKey(autoGenerate = true) var personId: Long = 0L
 }

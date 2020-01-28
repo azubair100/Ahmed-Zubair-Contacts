@@ -1,5 +1,6 @@
 package com.example.ahmedzubaircontacts.view.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,13 +34,14 @@ class PersonListAdapter(private val personList: ArrayList<Person>):
     override fun getItemCount(): Int = personList.size
 
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
+        Log.d("test ", "--" + personList[position].personId )
         holder.view.person = personList[position]
         holder.view.listener = this
     }
 
     override fun onPersonClicked(view: View) {
         val action = ListFragmentDirections.actionListFragmentToContactDetailsFragment()
-        action.personId = view.personId.toString().toLong()
+        action.personId = view.personIdIV.text.toString().toInt().toLong()
         Navigation.findNavController(view).navigate(action)
     }
 

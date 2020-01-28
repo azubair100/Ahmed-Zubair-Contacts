@@ -3,6 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="person"
+            type="com.example.ahmedzubaircontacts.model.Person"/>
+
+        <variable
+            name="phoneListener"
+            type="com.example.ahmedzubaircontacts.view.clicklisteners.PhoneClickListener"/>
+
+    </data>
+
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/contactDetailsCOL"
         android:layout_width="match_parent"
@@ -24,7 +36,11 @@
                 android:orientation="vertical"
                 android:layout_gravity="center_horizontal">
 
-                <include layout="@layout/edit_contact_basic_info" />
+                <TextView
+                    android:id="@+id/birthDateTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
                 <include layout="@layout/edit_contact_phone" />
                 <include layout="@layout/edit_contact_email" />
                 <include layout="@layout/edit_contact_address" />

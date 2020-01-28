@@ -18,10 +18,13 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
         }
     }
 
-    fun getPersonsByQuery(query: String){
+    fun getPersonsByQuery(query: String?){
         loading.value = true
         launch {
-            personsRetrieved(ContactDatabase(getApplication()).personDAO().searchPersons(query))
+            if(!query.isNullOrEmpty()) {
+                personsRetrieved(
+                    ContactDatabase(getApplication()).personDAO().searchPersons("%$query%"))
+            }
         }
     }
 

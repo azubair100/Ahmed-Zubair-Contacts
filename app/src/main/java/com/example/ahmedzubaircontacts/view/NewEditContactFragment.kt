@@ -148,7 +148,6 @@ class NewEditContactFragment : Fragment() {
 
     private fun setUpEditText(){
         saveBtn.isEnabled = false
-//        birthdayETI.setOnFocusChangeListener{ _, b -> if (!b) hideKeyboard() }
 
         if(personId == 0L){
         firstNameETI.addTextChangedListener(object: TextWatcher{

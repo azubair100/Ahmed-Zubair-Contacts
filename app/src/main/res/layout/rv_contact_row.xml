@@ -26,13 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/personId"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="gone"
-                android:text="@{String.valueOf(person.personId)}"/>
-
             <ImageView
                 android:id="@+id/profileSmallIV"
                 android:layout_width="90dp"
@@ -72,6 +65,13 @@
                     android:textSize="20sp"
                     android:layout_marginBottom="2dp"
                     android:text="@{person.birthday}"/>
+
+                <TextView
+                    android:id="@+id/personIdIV"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    android:text="@{String.valueOf(person.personId)}"/>
 
             </LinearLayout>
 

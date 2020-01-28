@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -42,6 +43,7 @@ class ListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpToolBar()
         setUpRecyclerView()
+        setUpSearchView()
         observeViewModel()
         listViewModel.getAllPersons()
     }
@@ -51,6 +53,22 @@ class ListFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = personAdapter
         }
+    }
+
+    private fun setUpSearchView(){
+        listFragmentSV.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                listViewModel.getPersonsByQuery(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (listFragmentSV.query.isEmpty()) {
+                    listViewModel.getAllPersons()
+                }
+                return false
+            }
+        })
     }
 
     private fun observeViewModel(){
