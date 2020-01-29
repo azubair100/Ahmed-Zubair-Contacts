@@ -16,7 +16,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
-import com.example.ahmedzubaircontacts.databinding.FragmentNewEditContactBinding
+import com.example.ahmedzubaircontacts.databinding.FragmentNewContactBinding
 import com.example.ahmedzubaircontacts.model.BusEvent
 import com.example.ahmedzubaircontacts.model.Person
 import com.example.ahmedzubaircontacts.util.AlertUtil
@@ -29,17 +29,17 @@ import kotlinx.android.synthetic.main.edit_contact_address.*
 import kotlinx.android.synthetic.main.edit_contact_basic_info.*
 import kotlinx.android.synthetic.main.edit_contact_email.*
 import kotlinx.android.synthetic.main.edit_contact_phone.*
-import kotlinx.android.synthetic.main.fragment_new_edit_contact.*
+import kotlinx.android.synthetic.main.fragment_new_contact.*
 
 
-class NewEditContactFragment : Fragment() {
+class NewContactFragment : Fragment() {
 
     private var personId : Long = 0L
     private lateinit var newContactViewModel: NewContactViewModel
     private lateinit var newContactAdapterPhone: NewContactAdapter
     private lateinit var newContactAdapterEmail: NewContactAdapter
     private lateinit var newContactAdapterAddress: NewContactAdapter
-    private lateinit var dataBinding: FragmentNewEditContactBinding
+    private lateinit var dataBinding: FragmentNewContactBinding
     private var phoneTextDisplay = arrayListOf<String>()
     private var emailTextDisplay = arrayListOf<String>()
     private var addressTextDisplay = arrayListOf<String>()
@@ -58,13 +58,13 @@ class NewEditContactFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_edit_contact, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_contact, container, false)
         return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let { personId = NewEditContactFragmentArgs.fromBundle(it).personId }
+        arguments?.let { personId = NewContactFragmentArgs.fromBundle(it).personId }
         setUpViews()
         observeViewModel()
     }
@@ -158,7 +158,6 @@ class NewEditContactFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 saveBtn.isEnabled = s.toString().trim().isNotEmpty()
-                if(!saveBtn.isEnabled) saveBtn.setTextColor(resources.getColor(R.color.design_default_color_primary_dark))
             }
         })
     }

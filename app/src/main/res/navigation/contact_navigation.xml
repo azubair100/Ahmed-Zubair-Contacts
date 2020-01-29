@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/newEditContactFragment"
-        android:name="com.example.ahmedzubaircontacts.view.NewEditContactFragment"
+        android:name="com.example.ahmedzubaircontacts.view.NewContactFragment"
         android:label="NewEditContactFragment" >
         <argument
             android:name="personId"

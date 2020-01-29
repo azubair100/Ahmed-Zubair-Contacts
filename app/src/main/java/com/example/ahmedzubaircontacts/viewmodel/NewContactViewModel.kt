@@ -13,7 +13,7 @@ class NewContactViewModel(application: Application) : BaseViewModel(application)
             val personDao = ContactDatabase(getApplication()).personDAO()
             val personId = personDao.insert(person)
 
-            personId?.let {
+            personId.let {
                 if(phones.size > 0){
                     val phoneDao = ContactDatabase(getApplication()).phoneDAO()
                     val phoneList = returnPhoneList(phones, personId)

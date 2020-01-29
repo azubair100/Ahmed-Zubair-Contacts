@@ -10,13 +10,12 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:bind="http://schemas.android.com/apk/res-auto"
         android:id="@+id/contactDetailsCOL"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <include layout="@layout/fragment_contact_detials_app_bar" bind:name ="@{person}" />
+        <include layout="@layout/fragment_contact_detials_app_bar" app:name="@{person}" />
 
         <androidx.core.widget.NestedScrollView
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -34,11 +33,22 @@
                 <TextView
                     android:id="@+id/birthDateTV"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="@{person.birthday}"
+                    android:textAlignment="center" />
 
                 <include layout="@layout/edit_contact_phone" />
                 <include layout="@layout/edit_contact_email" />
                 <include layout="@layout/edit_contact_address" />
+
+                <Button
+                    android:id="@+id/editContactsBtn"
+                    android:text="@string/edit_contact"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    android:layout_gravity="center_horizontal"/>
 
             </LinearLayout>
 
