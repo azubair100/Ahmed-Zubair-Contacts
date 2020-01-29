@@ -17,11 +17,15 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
+import com.example.ahmedzubaircontacts.model.BusEvent
 import com.example.ahmedzubaircontacts.model.Person
+import com.example.ahmedzubaircontacts.util.AlertUtil
 import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.squareup.otto.Bus
+import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.edit_contact_address.*
 import kotlinx.android.synthetic.main.edit_contact_basic_info.*
 import kotlinx.android.synthetic.main.edit_contact_email.*
@@ -39,6 +43,7 @@ class NewEditContactFragment : Fragment() {
     private var phoneTextDisplay = arrayListOf<String>()
     private var emailTextDisplay = arrayListOf<String>()
     private var addressTextDisplay = arrayListOf<String>()
+    private var bus = Bus()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,11 +53,22 @@ class NewEditContactFragment : Fragment() {
         newContactAdapterEmail = NewContactAdapter(arrayListOf())
         newContactAdapterAddress = NewContactAdapter(arrayListOf())
     }
-    
+
+    override fun onStart() {
+        super.onStart()
+        bus.register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        bus.unregister(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_new_edit_contact, container, false)
@@ -82,6 +98,29 @@ class NewEditContactFragment : Fragment() {
         })
     }
 
+    @Subscribe
+    fun getNewPhone(phone: BusEvent){
+        if(phone.dataType == "phone") {
+            phoneTextDisplay.add(phone.data)
+            newContactAdapterPhone.updateContactDetailsList(phoneTextDisplay)
+        }
+    }
+
+    @Subscribe
+    fun getNewEmail(email: BusEvent){
+        if(email.dataType == "email")
+        emailTextDisplay.add(email.data)
+        newContactAdapterEmail.updateContactDetailsList(emailTextDisplay)
+    }
+
+    @Subscribe
+    fun getNewAddress(address: BusEvent){
+        if(address.dataType == "address"){
+            addressTextDisplay.add(address.data)
+            newContactAdapterAddress.updateContactDetailsList(addressTextDisplay)
+        }
+    }
+
     private fun setUpRecyclerView(){
         phoneNumberRV.apply {
             layoutManager = LinearLayoutManager(context)
@@ -100,13 +139,13 @@ class NewEditContactFragment : Fragment() {
     private fun setUpButtons(){
         
         createNewEmailBtn.setOnClickListener{
-            newEmailAlert()
+            AlertUtil.newEmailAlert(context!!, bus)
         }
         createNewPhoneBtn.setOnClickListener {
-            newPhoneAlert()
+            AlertUtil.newPhoneAlert(context!!, bus)
         }
         createNewAddressBtn.setOnClickListener {
-            newAddressAlert()
+            AlertUtil.newAddressAlert(context!!, bus)
         }
 
         cancelBtn.setOnClickListener{
@@ -142,111 +181,6 @@ class NewEditContactFragment : Fragment() {
     }
     }
 
-    private fun newPhoneAlert(){
-        val dialog = Dialog(context!!)
-        dialog.setContentView(R.layout.new_phone_number_alert_layout)
-
-        val phoneType = dialog.findViewById<TextInputEditText>(R.id.phoneTypeTIET)
-        val phoneNumber = dialog.findViewById<TextInputEditText>(R.id.numberTIET)
-        val saveBtn = dialog.findViewById<Button>(R.id.savePhoneBtn)
-        val cancelBtn = dialog.findViewById<Button>(R.id.cancelBtn)
-
-        phoneNumber?.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                if(s.toString().trim().isNotEmpty()) phoneNumber.error = null
-                else phoneNumber.error = getString(R.string.field_required)
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                saveBtn?.isEnabled = s.toString().trim().isNotEmpty()
-                if(!saveBtn?.isEnabled!!) saveBtn.setTextColor(resources.getColor(R.color.design_default_color_primary_dark))
-            }
-        })
-
-        cancelBtn?.setOnClickListener{ dialog.dismiss() }
-        saveBtn?.setOnClickListener {
-            val type = phoneType?.text.toString()
-            val number = phoneNumber?.text.toString()
-            phoneTextDisplay.add("$type: $number")
-            newContactAdapterPhone.updateContactDetailsList(phoneTextDisplay)
-            dialog.dismiss()
-            hideKeyboard()
-        }
-        dialog.show()
-    }
-
-    private fun newEmailAlert(){
-        val dialog = Dialog(context!!)
-        dialog.setContentView(R.layout.new_email_alert_layout)
-
-        val emailType = dialog.findViewById<TextInputEditText>(R.id.emailTypeTIET)
-        val emailAddress = dialog.findViewById<TextInputEditText>(R.id.emailTIET)
-        val saveBtn = dialog.findViewById<Button>(R.id.saveEmailBtn)
-        val cancelBtn = dialog.findViewById<Button>(R.id.cancelBtn)
-
-        emailAddress?.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                if(s.toString().trim().isNotEmpty()) emailAddress.error = null
-                else emailAddress.error = getString(R.string.field_required)
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                saveBtn?.isEnabled = s.toString().trim().isNotEmpty()
-                if(!saveBtn?.isEnabled!!) saveBtn.setTextColor(resources.getColor(R.color.design_default_color_primary_dark))
-            }
-        })
-
-        cancelBtn?.setOnClickListener{ dialog.dismiss() }
-        saveBtn?.setOnClickListener {
-            val type = emailType?.text.toString()
-            val email = emailAddress?.text.toString()
-            emailTextDisplay.add("$type: $email")
-            newContactAdapterEmail.updateContactDetailsList(emailTextDisplay)
-            dialog.dismiss()
-            hideKeyboard()
-        }
-        dialog.show()
-    }
-
-    private fun newAddressAlert(){
-        val dialog = Dialog(context!!)
-        dialog.setContentView(R.layout.new_address_alert_layout)
-
-        val saveBtn = dialog.findViewById<Button>(R.id.saveAddressBtn)
-        val cancelBtn = dialog.findViewById<Button>(R.id.cancelBtn)
-
-        val addressType = dialog.findViewById<TextInputEditText>(R.id.addressTypeTIET)
-        val street = dialog.findViewById<TextInputEditText>(R.id.streetTIET)
-        val city = dialog.findViewById<TextInputEditText>(R.id.cityTIET)
-        val state = dialog.findViewById<TextInputEditText>(R.id.stateTIET)
-        val zip = dialog.findViewById<TextInputEditText>(R.id.zipTIET)
-
-        street?.addTextChangedListener(object: TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-                if(s.toString().trim().isNotEmpty()) street.error = null
-                else street.error = getString(R.string.field_required)
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                saveBtn?.isEnabled = s.toString().trim().isNotEmpty()
-                if(!saveBtn?.isEnabled!!) saveBtn.setTextColor(resources.getColor(R.color.design_default_color_primary_dark))
-            }
-        })
-
-        cancelBtn?.setOnClickListener{ dialog.dismiss() }
-        saveBtn?.setOnClickListener {
-            val type = addressType.text.toString()
-            val streetName = street?.text.toString()
-            val cityName = city?.text.toString()
-            val stateName = state?.text.toString()
-            val zipName = zip?.text.toString()
-            addressTextDisplay.add("$type: $streetName, $cityName, $stateName $zipName")
-            newContactAdapterAddress.updateContactDetailsList(addressTextDisplay)
-            dialog.dismiss()
-            hideKeyboard()
-        }
-        dialog.show()
-    }
 
     private fun hideKeyboard() {
         val imm = activity!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
