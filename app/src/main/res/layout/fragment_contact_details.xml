@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <include layout="@layout/fragment_contact_detials_app_bar" app:name="@{person}" />
+        <include layout="@layout/fragment_contact_details_app_bar" app:name="@{person}" />
 
         <androidx.core.widget.NestedScrollView
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

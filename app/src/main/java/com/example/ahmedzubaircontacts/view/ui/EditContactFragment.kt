@@ -204,8 +204,9 @@ class EditContactFragment : Fragment() {
 
     @Subscribe
     fun getNewAddress(address: Address){
-        addressesDisplay.add(address)
-        newContactAdapterAddress.updateNewContactDetailAddress(addressesDisplay)
+        var addresses = newContactAdapterAddress.list as? ArrayList<Address>
+        addresses?.add(address)
+        newContactAdapterAddress.notifyDataSetChanged()
     }
 
 }

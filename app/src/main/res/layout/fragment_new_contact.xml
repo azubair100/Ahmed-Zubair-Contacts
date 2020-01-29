@@ -70,7 +70,7 @@
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical">
 
-                <include layout="@layout/edit_contact_basic_info" />
+                <include layout="@layout/edit_contact_basic_info" app:name="@{person}"/>
 
                 <include layout="@layout/edit_contact_phone" />
 

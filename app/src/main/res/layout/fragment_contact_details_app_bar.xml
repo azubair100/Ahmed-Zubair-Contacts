@@ -57,7 +57,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginStart="20dp"
                     android:textStyle="bold"
-                    tools:text="@{name.firstName.concat(@string/space).concat(name.lastName)}" />
+                    android:text="@{name.firstName.concat(@string/space).concat(name.lastName)}" />
             </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
