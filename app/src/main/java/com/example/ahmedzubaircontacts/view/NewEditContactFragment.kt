@@ -17,10 +17,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
-import com.example.ahmedzubaircontacts.model.Address
-import com.example.ahmedzubaircontacts.model.Email
 import com.example.ahmedzubaircontacts.model.Person
-import com.example.ahmedzubaircontacts.model.Phone
 import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -39,15 +36,9 @@ class NewEditContactFragment : Fragment() {
     private lateinit var newContactAdapterPhone: NewContactAdapter
     private lateinit var newContactAdapterEmail: NewContactAdapter
     private lateinit var newContactAdapterAddress: NewContactAdapter
-    private var phones = arrayListOf<Phone>()
-    private var emails = arrayListOf<Email>()
-    private var addresses = arrayListOf<Address>()
     private var phoneTextDisplay = arrayListOf<String>()
     private var emailTextDisplay = arrayListOf<String>()
     private var addressTextDisplay = arrayListOf<String>()
-    /*private lateinit var phones: ArrayList<Phone>
-    private lateinit var emails: ArrayList<Email>
-    private lateinit var addresses: ArrayList<Address>*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +47,6 @@ class NewEditContactFragment : Fragment() {
         newContactAdapterPhone = NewContactAdapter(arrayListOf())
         newContactAdapterEmail = NewContactAdapter(arrayListOf())
         newContactAdapterAddress = NewContactAdapter(arrayListOf())
-        /*phones = arrayListOf()
-        emails = arrayListOf()
-        addresses = arrayListOf()*/
     }
     
     override fun onCreateView(
@@ -66,6 +54,7 @@ class NewEditContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_new_edit_contact, container, false)
     }
 
@@ -128,7 +117,6 @@ class NewEditContactFragment : Fragment() {
             hideKeyboard()
             val person = Person(firstNameETI.text.toString(), lastNameETI.text.toString(), birthdayETI.text.toString())
 
-//            todo progress bar viewmodel
             newContactViewModel.saveContact(person, phoneTextDisplay, emailTextDisplay, addressTextDisplay)
             newContactPB.visibility = View.VISIBLE
             nestedScrollView.visibility = View.INVISIBLE
@@ -139,7 +127,6 @@ class NewEditContactFragment : Fragment() {
 
     private fun setUpEditText(){
         saveBtn.isEnabled = false
-
         if(personId == 0L){
         firstNameETI.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
@@ -180,11 +167,10 @@ class NewEditContactFragment : Fragment() {
         saveBtn?.setOnClickListener {
             val type = phoneType?.text.toString()
             val number = phoneNumber?.text.toString()
-//            phones.add(Phone(personId, type, number))
             phoneTextDisplay.add("$type: $number")
             newContactAdapterPhone.updateContactDetailsList(phoneTextDisplay)
-            hideKeyboard()
             dialog.dismiss()
+            hideKeyboard()
         }
         dialog.show()
     }
@@ -216,8 +202,8 @@ class NewEditContactFragment : Fragment() {
             val email = emailAddress?.text.toString()
             emailTextDisplay.add("$type: $email")
             newContactAdapterEmail.updateContactDetailsList(emailTextDisplay)
-            hideKeyboard()
             dialog.dismiss()
+            hideKeyboard()
         }
         dialog.show()
     }
@@ -256,20 +242,16 @@ class NewEditContactFragment : Fragment() {
             val zipName = zip?.text.toString()
             addressTextDisplay.add("$type: $streetName, $cityName, $stateName $zipName")
             newContactAdapterAddress.updateContactDetailsList(addressTextDisplay)
-            hideKeyboard()
             dialog.dismiss()
-
+            hideKeyboard()
         }
         dialog.show()
     }
 
     private fun hideKeyboard() {
-        val imm: InputMethodManager =
-            activity!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = activity!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         var view = activity!!.currentFocus
-        if (view == null) {
-            view = View(activity)
-        }
+        if (view == null) view = View(activity)
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
