@@ -83,7 +83,6 @@ class ContactDetailsFragment : Fragment() {
             if(!it.isNullOrEmpty()) addressesAdapter.updateContactDetailsAddress(it)
             else editContactAddressContainer.visibility = View.GONE
         })
-
     }
 
     private fun setUpViews(){

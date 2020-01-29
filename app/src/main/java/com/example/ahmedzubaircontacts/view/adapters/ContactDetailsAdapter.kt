@@ -43,10 +43,12 @@ class ContactDetailsAdapter(private val list: ArrayList<Any>):
                 holder.view.phoneListener = this
             }
             is Email -> {
+                isEmail = true
                 detail = obj.type + " " + obj.address
                 holder.view.emailListener = this
             }
             is Address -> {
+                isAddress = true
                 detail = obj.type + " " + obj.street + ", " + obj.city +
                         ", " + obj.state + "-" + obj.zip
                 holder.view.addressListener = this
