@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.NewContactDetailRowBinding
 
-class NewContactAdapter(private val list: ArrayList<String>):
+class NewContactAdapter(val list: ArrayList<String>):
 RecyclerView.Adapter<NewContactAdapter.ContactDetailsViewHolder>(){
 
     fun updateContactDetailsList(newList: List<String>){

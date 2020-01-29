@@ -117,7 +117,7 @@ class NewEditContactFragment : Fragment() {
             hideKeyboard()
             val person = Person(firstNameETI.text.toString(), lastNameETI.text.toString(), birthdayETI.text.toString())
 
-            newContactViewModel.saveContact(person, phoneTextDisplay, emailTextDisplay, addressTextDisplay)
+            newContactViewModel.saveContact(person, newContactAdapterPhone.list, newContactAdapterEmail.list, newContactAdapterAddress.list)
             newContactPB.visibility = View.VISIBLE
             nestedScrollView.visibility = View.INVISIBLE
             cancelBtn.visibility = View.INVISIBLE
