@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
+import com.example.ahmedzubaircontacts.databinding.FragmentListBinding
 import com.example.ahmedzubaircontacts.view.adapters.PersonListAdapter
 import com.example.ahmedzubaircontacts.viewmodel.ListViewModel
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -23,6 +25,7 @@ class ListFragment : Fragment() {
 
     private lateinit var listViewModel: ListViewModel
     private lateinit var personAdapter: PersonListAdapter
+    private lateinit var dataBinding: FragmentListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +39,28 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpToolBar()
-        setUpRecyclerView()
-        setUpSearchView()
+        setUpViews()
         observeViewModel()
         listViewModel.getAllPersons()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dataBinding.unbind()
+    }
+
+    private fun setUpViews(){
+        dataBinding.apply {
+            setUpRecyclerView()
+            setUpToolBar()
+            setUpSearchView()
+        }
     }
 
     private fun setUpRecyclerView(){

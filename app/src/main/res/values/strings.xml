@@ -25,4 +25,5 @@
     <string name="state">State</string>
     <string name="zip">Zip</string>
     <string name="space">&#160;</string>
+    <string name="error_contact_saving">An error occurred! Contact could not be saved. Please try again.</string>
 </resources>

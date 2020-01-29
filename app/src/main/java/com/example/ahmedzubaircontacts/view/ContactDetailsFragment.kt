@@ -34,7 +34,6 @@ class ContactDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         dataBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_contact_details, container, false)
         return dataBinding.root
@@ -44,18 +43,27 @@ class ContactDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         detailViewModel = ViewModelProviders.of(this).get(ContactDetailsViewModel::class.java)
         retainInstance = true
-        phonesAdapter = ContactDetailsAdapter(arrayListOf())
-        emailsAdapter = ContactDetailsAdapter(arrayListOf())
-        addressesAdapter = ContactDetailsAdapter(arrayListOf())
+        setUpAdapters()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let { personId = ContactDetailsFragmentArgs.fromBundle(it).personId }
-        disableCreateNewButtons()
+        removeCreateNewButtons()
         setUpRecyclerView()
         observeViewModel()
         detailViewModel.getFullContact(personId)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dataBinding.unbind()
+    }
+    
+    private fun setUpAdapters(){
+        phonesAdapter = ContactDetailsAdapter(arrayListOf())
+        emailsAdapter = ContactDetailsAdapter(arrayListOf())
+        addressesAdapter = ContactDetailsAdapter(arrayListOf())
     }
 
     private fun observeViewModel(){
@@ -83,22 +91,24 @@ class ContactDetailsFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(){
-        phoneNumberRV.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = phonesAdapter
-        }
-        emailRV.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = emailsAdapter
-        }
-        addressRV.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = addressesAdapter
+        dataBinding.apply {
+            phoneNumberRV.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = phonesAdapter
+            }
+            emailRV.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = emailsAdapter
+            }
+            addressRV.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = addressesAdapter
+            }
         }
     }
 
     @SuppressLint("RestrictedApi")
-    private fun disableCreateNewButtons(){
+    private fun removeCreateNewButtons(){
         createNewPhoneBtn.visibility = View.GONE
         createNewEmailBtn.visibility = View.GONE
         createNewAddressBtn.visibility = View.GONE

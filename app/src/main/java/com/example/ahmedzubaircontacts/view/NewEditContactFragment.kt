@@ -1,7 +1,6 @@
 package com.example.ahmedzubaircontacts.view
 
 import android.app.Activity
-import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,13 +16,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
+import com.example.ahmedzubaircontacts.databinding.FragmentNewEditContactBinding
 import com.example.ahmedzubaircontacts.model.BusEvent
 import com.example.ahmedzubaircontacts.model.Person
 import com.example.ahmedzubaircontacts.util.AlertUtil
 import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.squareup.otto.Bus
 import com.squareup.otto.Subscribe
 import kotlinx.android.synthetic.main.edit_contact_address.*
@@ -40,6 +39,7 @@ class NewEditContactFragment : Fragment() {
     private lateinit var newContactAdapterPhone: NewContactAdapter
     private lateinit var newContactAdapterEmail: NewContactAdapter
     private lateinit var newContactAdapterAddress: NewContactAdapter
+    private lateinit var dataBinding: FragmentNewEditContactBinding
     private var phoneTextDisplay = arrayListOf<String>()
     private var emailTextDisplay = arrayListOf<String>()
     private var addressTextDisplay = arrayListOf<String>()
@@ -53,6 +53,21 @@ class NewEditContactFragment : Fragment() {
         newContactAdapterEmail = NewContactAdapter(arrayListOf())
         newContactAdapterAddress = NewContactAdapter(arrayListOf())
     }
+    
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_edit_contact, container, false)
+        return dataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        arguments?.let { personId = NewEditContactFragmentArgs.fromBundle(it).personId }
+        setUpViews()
+        observeViewModel()
+    }
 
     override fun onStart() {
         super.onStart()
@@ -64,23 +79,17 @@ class NewEditContactFragment : Fragment() {
         bus.unregister(this)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_new_edit_contact, container, false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dataBinding.unbind()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        arguments?.let { personId = NewEditContactFragmentArgs.fromBundle(it).personId }
-        observeViewModel()
-        setUpEditText()
-        setUpButtons()
-        setUpRecyclerView()
+    private fun setUpViews(){
+        dataBinding.apply {
+            makeFirstNameMandatory()
+            setUpButtons()
+            setUpRecyclerView()
+        }
     }
 
     private fun observeViewModel(){
@@ -89,7 +98,7 @@ class NewEditContactFragment : Fragment() {
                 findNavController().navigate(R.id.action_newEditContactFragment_to_listFragment)
             }
             else{
-                Snackbar.make(it, "An error occurred! Contact could not be saved. Please try again.", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(it, getString(R.string.error_contact_saving), Snackbar.LENGTH_LONG).show()
                 newContactPB.visibility = View.GONE
                 nestedScrollView.visibility = View.VISIBLE
                 cancelBtn.visibility = View.VISIBLE
@@ -97,30 +106,7 @@ class NewEditContactFragment : Fragment() {
             }
         })
     }
-
-    @Subscribe
-    fun getNewPhone(phone: BusEvent){
-        if(phone.dataType == "phone") {
-            phoneTextDisplay.add(phone.data)
-            newContactAdapterPhone.updateContactDetailsList(phoneTextDisplay)
-        }
-    }
-
-    @Subscribe
-    fun getNewEmail(email: BusEvent){
-        if(email.dataType == "email")
-        emailTextDisplay.add(email.data)
-        newContactAdapterEmail.updateContactDetailsList(emailTextDisplay)
-    }
-
-    @Subscribe
-    fun getNewAddress(address: BusEvent){
-        if(address.dataType == "address"){
-            addressTextDisplay.add(address.data)
-            newContactAdapterAddress.updateContactDetailsList(addressTextDisplay)
-        }
-    }
-
+    
     private fun setUpRecyclerView(){
         phoneNumberRV.apply {
             layoutManager = LinearLayoutManager(context)
@@ -137,7 +123,6 @@ class NewEditContactFragment : Fragment() {
     }
 
     private fun setUpButtons(){
-        
         createNewEmailBtn.setOnClickListener{
             AlertUtil.newEmailAlert(context!!, bus)
         }
@@ -164,9 +149,7 @@ class NewEditContactFragment : Fragment() {
         }
     }
 
-    private fun setUpEditText(){
-        saveBtn.isEnabled = false
-        if(personId == 0L){
+    private fun makeFirstNameMandatory(){
         firstNameETI.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 if(s.toString().trim().isNotEmpty()) firstNameETI.error = null
@@ -179,14 +162,35 @@ class NewEditContactFragment : Fragment() {
             }
         })
     }
-    }
-
 
     private fun hideKeyboard() {
         val imm = activity!!.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         var view = activity!!.currentFocus
         if (view == null) view = View(activity)
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    @Subscribe
+    fun getNewPhone(phone: BusEvent){
+        if(phone.dataType == "phone") {
+            phoneTextDisplay.add(phone.data)
+            newContactAdapterPhone.updateContactDetailsList(phoneTextDisplay)
+        }
+    }
+
+    @Subscribe
+    fun getNewEmail(email: BusEvent){
+        if(email.dataType == "email")
+            emailTextDisplay.add(email.data)
+        newContactAdapterEmail.updateContactDetailsList(emailTextDisplay)
+    }
+
+    @Subscribe
+    fun getNewAddress(address: BusEvent){
+        if(address.dataType == "address"){
+            addressTextDisplay.add(address.data)
+            newContactAdapterAddress.updateContactDetailsList(addressTextDisplay)
+        }
     }
 
 
