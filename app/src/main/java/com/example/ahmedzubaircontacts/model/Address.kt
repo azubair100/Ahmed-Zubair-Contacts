@@ -22,6 +22,6 @@ data class Address(
     val city : String,
     val state : String,
     val zip : String
-    ): Serializable {
+    ) {
     @PrimaryKey(autoGenerate = true) var addressId: Long = 0
 }

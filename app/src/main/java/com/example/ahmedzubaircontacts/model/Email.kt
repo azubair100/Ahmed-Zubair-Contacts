@@ -18,6 +18,6 @@ data class Email(
     val personCreatorId : Long,
     val type : String,
     val address : String
-    ): Serializable {
+    ){
     @PrimaryKey(autoGenerate = true) var emailId: Long = 0
 }

@@ -18,6 +18,6 @@ data class Phone(
     val personCreatorId : Long,
     val type : String,
     val number : String
-): Serializable {
+){
     @PrimaryKey(autoGenerate = true) var phoneId: Long = 0
 }

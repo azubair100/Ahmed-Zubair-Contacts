@@ -53,18 +53,9 @@ class NewEditContactFragment : Fragment() {
         super.onCreate(savedInstanceState)
         newContactViewModel = ViewModelProviders.of(this).get(NewContactViewModel::class.java)
         retainInstance = true
-        newContactAdapterPhone =
-            NewContactAdapter(
-                arrayListOf()
-            )
-        newContactAdapterEmail =
-            NewContactAdapter(
-                arrayListOf()
-            )
-        newContactAdapterAddress =
-            NewContactAdapter(
-                arrayListOf()
-            )
+        newContactAdapterPhone = NewContactAdapter(arrayListOf())
+        newContactAdapterEmail = NewContactAdapter(arrayListOf())
+        newContactAdapterAddress = NewContactAdapter(arrayListOf())
         /*phones = arrayListOf()
         emails = arrayListOf()
         addresses = arrayListOf()*/

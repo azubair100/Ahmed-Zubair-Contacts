@@ -8,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentContactDetailsBinding
 import com.example.ahmedzubaircontacts.model.Person
+import com.example.ahmedzubaircontacts.view.adapters.ContactDetailsAdapter
 import com.example.ahmedzubaircontacts.viewmodel.ContactDetailsViewModel
 import kotlinx.android.synthetic.main.edit_contact_address.*
 import kotlinx.android.synthetic.main.edit_contact_email.*
@@ -23,13 +26,17 @@ class ContactDetailsFragment : Fragment() {
     private var personId = 0L
     private lateinit var dataBinding: FragmentContactDetailsBinding
     private var currentPerson: Person? = null
+    private lateinit var phonesAdapter: ContactDetailsAdapter
+    private lateinit var emailsAdapter: ContactDetailsAdapter
+    private lateinit var addressesAdapter: ContactDetailsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_contact_details, container, false)
+        dataBinding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_contact_details, container, false)
         return dataBinding.root
     }
 
@@ -37,16 +44,57 @@ class ContactDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         detailViewModel = ViewModelProviders.of(this).get(ContactDetailsViewModel::class.java)
         retainInstance = true
+        phonesAdapter = ContactDetailsAdapter(arrayListOf())
+        emailsAdapter = ContactDetailsAdapter(arrayListOf())
+        addressesAdapter = ContactDetailsAdapter(arrayListOf())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let { personId = ContactDetailsFragmentArgs.fromBundle(it).personId }
         disableCreateNewButtons()
+        setUpRecyclerView()
+        observeViewModel()
+        detailViewModel.getFullContact(personId)
     }
 
     private fun observeViewModel(){
+        detailViewModel.personLiveData.observe(viewLifecycleOwner, Observer{
+            it?.let { person ->
+                currentPerson = person
+                dataBinding.person = person
+            }
+        })
 
+        detailViewModel.phonesLiveData.observe(viewLifecycleOwner, Observer {
+            if(!it.isNullOrEmpty()) phonesAdapter.updateContactDetailsPhone(it)
+            else editContactPhoneContainer.visibility = View.GONE
+        })
+
+        detailViewModel.emailsLiveData.observe(viewLifecycleOwner, Observer {
+            if(!it.isNullOrEmpty()) emailsAdapter.updateContactDetailsEmail(it)
+            else editContactEmailContainer.visibility = View.GONE
+        })
+        detailViewModel.addressesLiveData.observe(viewLifecycleOwner, Observer {
+            if(!it.isNullOrEmpty()) addressesAdapter.updateContactDetailsAddress(it)
+            else editContactAddressContainer.visibility = View.GONE
+        })
+
+    }
+
+    private fun setUpRecyclerView(){
+        phoneNumberRV.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = phonesAdapter
+        }
+        emailRV.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = emailsAdapter
+        }
+        addressRV.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = addressesAdapter
+        }
     }
 
     @SuppressLint("RestrictedApi")
