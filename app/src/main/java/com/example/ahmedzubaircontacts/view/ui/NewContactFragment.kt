@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentNewContactBinding
-import com.example.ahmedzubaircontacts.model.BusEvent
-import com.example.ahmedzubaircontacts.model.Person
+import com.example.ahmedzubaircontacts.model.*
 import com.example.ahmedzubaircontacts.util.AlertUtil
 import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
@@ -40,9 +40,9 @@ class NewContactFragment : Fragment() {
     private lateinit var newContactAdapterEmail: NewContactAdapter
     private lateinit var newContactAdapterAddress: NewContactAdapter
     private lateinit var dataBinding: FragmentNewContactBinding
-    private var phoneTextDisplay = arrayListOf<String>()
-    private var emailTextDisplay = arrayListOf<String>()
-    private var addressTextDisplay = arrayListOf<String>()
+    private var phonesDisplay = arrayListOf<Phone>()
+    private var emailsDisplay = arrayListOf<Email>()
+    private var addressesDisplay = arrayListOf<Address>()
     private var bus = Bus()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,6 +122,7 @@ class NewContactFragment : Fragment() {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun setUpButtons(){
         createNewEmailBtn.setOnClickListener{
             AlertUtil.newEmailAlert(context!!, bus)
@@ -141,7 +142,10 @@ class NewContactFragment : Fragment() {
             hideKeyboard()
             val person = Person(firstNameETI.text.toString(), lastNameETI.text.toString(), birthdayETI.text.toString())
 
-            newContactViewModel.saveContact(person, newContactAdapterPhone.list, newContactAdapterEmail.list, newContactAdapterAddress.list)
+            val phones = newContactAdapterPhone.list as? ArrayList<Phone>
+            val emails = newContactAdapterEmail.list as? ArrayList<Email>
+            val addresses = newContactAdapterAddress.list as? ArrayList<Address>
+            newContactViewModel.saveContact(person, phones, emails, addresses)
             newContactPB.visibility = View.VISIBLE
             nestedScrollView.visibility = View.INVISIBLE
             cancelBtn.visibility = View.INVISIBLE
@@ -170,26 +174,21 @@ class NewContactFragment : Fragment() {
     }
 
     @Subscribe
-    fun getNewPhone(phone: BusEvent){
-        if(phone.dataType == "phone") {
-            phoneTextDisplay.add(phone.data)
-            newContactAdapterPhone.updateContactDetailsList(phoneTextDisplay)
-        }
+    fun getNewPhone(phone: Phone){
+        phonesDisplay.add(phone)
+        newContactAdapterPhone.updateNewContactPhone(phonesDisplay)
     }
 
     @Subscribe
-    fun getNewEmail(email: BusEvent){
-        if(email.dataType == "email")
-            emailTextDisplay.add(email.data)
-        newContactAdapterEmail.updateContactDetailsList(emailTextDisplay)
+    fun getNewEmail(email: Email){
+        emailsDisplay.add(email)
+        newContactAdapterEmail.updateNewContactDetailEmail(emailsDisplay)
     }
 
     @Subscribe
-    fun getNewAddress(address: BusEvent){
-        if(address.dataType == "address"){
-            addressTextDisplay.add(address.data)
-            newContactAdapterAddress.updateContactDetailsList(addressTextDisplay)
-        }
+    fun getNewAddress(address: Address){
+        addressesDisplay.add(address)
+        newContactAdapterAddress.updateNewContactDetailAddress(addressesDisplay)
     }
 
 

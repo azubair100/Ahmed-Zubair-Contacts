@@ -8,57 +8,52 @@ import kotlinx.coroutines.launch
 class NewContactViewModel(application: Application) : BaseViewModel(application) {
     var contactId: MutableLiveData<Long> = MutableLiveData()
 
-    fun saveContact(person: Person, phones: ArrayList<String>, emails: ArrayList<String>, addresses: ArrayList<String>){
+    fun saveContact(person: Person, phones: ArrayList<Phone>?, emails: ArrayList<Email>?, addresses: ArrayList<Address>?){
         launch {
             val personDao = ContactDatabase(getApplication()).personDAO()
             val personId = personDao.insert(person)
 
             personId.let {
-                if(phones.size > 0){
+                if(phones.isNullOrEmpty()){
                     val phoneDao = ContactDatabase(getApplication()).phoneDAO()
-                    val phoneList = returnPhoneList(phones, personId)
-                    phoneDao.insertAll(*phoneList.toTypedArray())
+                    val idAdjustedPhones = assignPersonIdToPhones(phones!!, personId)
+                    phoneDao.insertAll(*idAdjustedPhones.toTypedArray())
                 }
-                if(emails.size > 0){
+                if(emails.isNullOrEmpty()){
                     val emailDao = ContactDatabase(getApplication()).emailDAO()
-                    val emailList = returnEmailList(emails, personId)
-                    emailDao.insertAll(*emailList.toTypedArray())
+                    val idAdjustedEmails = assignPersonIdToEmails(emails!!, personId)
+                    emailDao.insertAll(*idAdjustedEmails.toTypedArray())
                 }
-                if(addresses.size > 0){
+                if(addresses.isNullOrEmpty()){
                     val addressDao = ContactDatabase(getApplication()).addressDAO()
-                    val addressList = returnAddressList(addresses, personId)
-                    addressDao.insertAll(*addressList.toTypedArray())
+                    val idAdjustedAddresses = assignPersonToAddresses(addresses!!, personId)
+                    addressDao.insertAll(*idAdjustedAddresses.toTypedArray())
                 }
                 contactId.value = personId
             }
         }
     }
 
-    private fun returnPhoneList(list: ArrayList<String>, personId: Long): ArrayList<Phone>{
-        val phones = arrayListOf<Phone>()
-        for(phoneString in list){
-            val phoneDetail: List<String> = phoneString.split(" ".toRegex())
-            phones.add(Phone(personId, phoneDetail[0], phoneDetail[phoneDetail.size-1]))
+    private fun assignPersonIdToPhones(list: ArrayList<Phone>, id: Long): ArrayList<Phone>{
+        val fixedId = ArrayList<Phone>()
+        for(phone in list){
+            fixedId.add(Phone(id, phone.type, phone.number))
         }
-        return phones
+        return fixedId
     }
 
-    private fun returnEmailList(list: ArrayList<String>, personId: Long): ArrayList<Email>{
-        val emails = arrayListOf<Email>()
-        for(emailString in list){
-            val emailDetail: List<String> = emailString.split(" ".toRegex())
-            emails.add(Email(personId, emailDetail[0], emailDetail[emailDetail.size-1]))
-        }
-        return emails
+    private fun assignPersonIdToEmails(list: ArrayList<Email>, id: Long): ArrayList<Email>{
+        val fixedId = ArrayList<Email>()
+        for(email in list){ fixedId.add(Email(id, email.type, email.address)) }
+        return fixedId
     }
 
-    private fun returnAddressList(list: ArrayList<String>, personId: Long): ArrayList<Address>{
-        val addresses = arrayListOf<Address>()
-        for(addressString in list){
-            val addressDetail: List<String> = addressString.split(" ".toRegex())
-            addresses.add(Address(personId, addressDetail[0], addressDetail[1], addressDetail[2], addressDetail[3], addressDetail[4]))
+    private fun assignPersonToAddresses(list: ArrayList<Address>, id: Long): ArrayList<Address>{
+        val fixedId = ArrayList<Address>()
+        for(address in list){
+            fixedId.add(Address(id, address.type, address.street, address.city, address.state, address.zip))
         }
-        return addresses
+        return fixedId
     }
 
 

@@ -6,7 +6,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import com.example.ahmedzubaircontacts.R
-import com.example.ahmedzubaircontacts.model.BusEvent
+import com.example.ahmedzubaircontacts.model.Address
+import com.example.ahmedzubaircontacts.model.Email
+import com.example.ahmedzubaircontacts.model.Phone
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.otto.Bus
 
@@ -36,7 +38,7 @@ class AlertUtil {
             saveBtn?.setOnClickListener {
                 val type = phoneType?.text.toString()
                 val number = phoneNumber?.text.toString()
-                bus.post(BusEvent("phone","$type: $number"))
+                bus.post(Phone(0L, type, number))
                 dialog.dismiss()
             }
             dialog.show()
@@ -66,7 +68,7 @@ class AlertUtil {
             saveBtn?.setOnClickListener {
                 val type = emailType?.text.toString()
                 val email = emailAddress?.text.toString()
-                bus.post(BusEvent("email","$type: $email"))
+                bus.post(Email(0L, type, email))
                 dialog.dismiss()
             }
             dialog.show()
@@ -103,9 +105,8 @@ class AlertUtil {
                 val cityName = city?.text.toString()
                 val stateName = state?.text.toString()
                 val zipName = zip?.text.toString()
-                bus.post(BusEvent("address", "$type: $streetName, $cityName, $stateName $zipName"))
+                bus.post(Address(0L, type, streetName, cityName, stateName, zipName))
                 dialog.dismiss()
-
             }
             dialog.show()
         }
