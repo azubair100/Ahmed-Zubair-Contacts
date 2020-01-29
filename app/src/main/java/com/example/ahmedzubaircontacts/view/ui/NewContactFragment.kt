@@ -49,11 +49,9 @@ class NewContactFragment : Fragment() {
         super.onCreate(savedInstanceState)
         newContactViewModel = ViewModelProviders.of(this).get(NewContactViewModel::class.java)
         retainInstance = true
-        newContactAdapterPhone = NewContactAdapter(arrayListOf())
-        newContactAdapterEmail = NewContactAdapter(arrayListOf())
-        newContactAdapterAddress = NewContactAdapter(arrayListOf())
+        setUpAdapters()
     }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -90,6 +88,12 @@ class NewContactFragment : Fragment() {
             setUpButtons()
             setUpRecyclerView()
         }
+    }
+
+    private fun setUpAdapters() {
+        newContactAdapterPhone = NewContactAdapter(arrayListOf())
+        newContactAdapterEmail = NewContactAdapter(arrayListOf())
+        newContactAdapterAddress = NewContactAdapter(arrayListOf())
     }
 
     private fun observeViewModel(){

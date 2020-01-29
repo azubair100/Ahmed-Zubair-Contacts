@@ -7,16 +7,16 @@ import kotlinx.coroutines.launch
 
 class ContactDetailsViewModel(application: Application) : BaseViewModel(application){
     val personLiveData: MutableLiveData<Person> = MutableLiveData()
-    val phonesLiveData: MutableLiveData<List<Phone>> = MutableLiveData()
-    val emailsLiveData: MutableLiveData<List<Email>> = MutableLiveData()
-    val addressesLiveData: MutableLiveData<List<Address>> = MutableLiveData()
+    val phonesLiveData: MutableLiveData<ArrayList<Phone>> = MutableLiveData()
+    val emailsLiveData: MutableLiveData<ArrayList<Email>> = MutableLiveData()
+    val addressesLiveData: MutableLiveData<ArrayList<Address>> = MutableLiveData()
 
     fun getFullContact(personId: Long){
         launch {
             personLiveData.value = ContactDatabase(getApplication()).personDAO().getPersonById(personId)
-            phonesLiveData.value = ContactDatabase(getApplication()).phoneDAO().findAllPhonesByPersonId(personId)
-            emailsLiveData.value = ContactDatabase(getApplication()).emailDAO().findAllEmailsByPersonId(personId)
-            addressesLiveData.value = ContactDatabase(getApplication()).addressDAO().findAllAddressesByPersonId(personId)
+            phonesLiveData.value = ArrayList(ContactDatabase(getApplication()).phoneDAO().findAllPhonesByPersonId(personId))
+            emailsLiveData.value = ArrayList(ContactDatabase(getApplication()).emailDAO().findAllEmailsByPersonId(personId))
+            addressesLiveData.value = ArrayList(ContactDatabase(getApplication()).addressDAO().findAllAddressesByPersonId(personId))
         }
     }
 

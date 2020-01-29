@@ -37,6 +37,11 @@
             app:destination="@id/newEditContactFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"/>
+        <action
+            android:id="@+id/action_contactDetailsFragment_to_editContactFragment"
+            app:destination="@id/editContactFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/newEditContactFragment"
@@ -48,6 +53,25 @@
             android:defaultValue="0L" />
         <action
             android:id="@+id/action_newEditContactFragment_to_listFragment"
-            app:destination="@id/listFragment" />
+            app:destination="@id/listFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/editContactFragment"
+        android:name="com.example.ahmedzubaircontacts.view.ui.EditContactFragment"
+        android:label="EditContactFragment">
+        <argument
+            android:name="personId"
+            app:argType="long"
+            android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_editContactFragment_to_contactDetailsFragment"
+            app:destination="@id/contactDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/contactDetailsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

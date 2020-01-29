@@ -11,22 +11,22 @@ import com.example.ahmedzubaircontacts.model.Address
 import com.example.ahmedzubaircontacts.model.Email
 import com.example.ahmedzubaircontacts.model.Phone
 
-class NewContactAdapter(val list: ArrayList<Any>):
+class NewContactAdapter(var list: ArrayList<Any>):
     RecyclerView.Adapter<NewContactAdapter.ContactDetailsViewHolder>(){
 
-    fun updateNewContactPhone(newList: List<Phone>) {
+    fun updateNewContactPhone(newList: ArrayList<Phone>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()
     }
 
-    fun updateNewContactDetailEmail(newList: List<Email>) {
+    fun updateNewContactDetailEmail(newList: ArrayList<Email>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()
     }
 
-    fun updateNewContactDetailAddress(newList: List<Address>) {
+    fun updateNewContactDetailAddress(newList: ArrayList<Address>) {
         list.clear()
         list.addAll(newList)
         notifyDataSetChanged()

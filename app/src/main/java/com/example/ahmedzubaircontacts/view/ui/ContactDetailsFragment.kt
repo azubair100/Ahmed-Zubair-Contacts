@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.ahmedzubaircontacts.R
@@ -103,12 +103,14 @@ class ContactDetailsFragment : Fragment() {
             }
 
             editContactsBtn.setOnClickListener {
-
+                val action = ContactDetailsFragmentDirections.actionContactDetailsFragmentToEditContactFragment()
+                action.personId = personId
+                findNavController().navigate(action)
             }
 
             deleteContactsBtn.setOnClickListener {
                 detailViewModel.deleteContact(personId)
-                it.findNavController().navigate(R.id.action_contactDetailsFragment_to_listFragment)
+                findNavController().navigate(R.id.action_contactDetailsFragment_to_listFragment)
             }
         }
     }
