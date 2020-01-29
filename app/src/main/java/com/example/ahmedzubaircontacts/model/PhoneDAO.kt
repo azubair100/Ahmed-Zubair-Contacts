@@ -15,4 +15,7 @@ interface PhoneDAO {
 
     @Query("SELECT * FROM phone WHERE personCreatorId = :personId")
     suspend fun findAllPhonesByPersonId(personId: Long): List<Phone>
+
+    @Query("DELETE FROM phone WHERE personCreatorId = :personId")
+    suspend fun deleteOldPhones(personId: Long)
 }

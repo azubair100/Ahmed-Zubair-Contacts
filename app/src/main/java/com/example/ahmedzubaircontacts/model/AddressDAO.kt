@@ -16,5 +16,7 @@ interface AddressDAO {
     @Query("SELECT * FROM address WHERE personCreatorId = :personId")
     suspend fun findAllAddressesByPersonId(personId: Long): List<Address>
 
+    @Query("DELETE FROM address WHERE personCreatorId = :personId")
+    suspend fun deleteOldAddress(personId: Long)
 
 }
