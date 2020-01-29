@@ -1,4 +1,4 @@
-package com.example.ahmedzubaircontacts.view
+package com.example.ahmedzubaircontacts.view.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

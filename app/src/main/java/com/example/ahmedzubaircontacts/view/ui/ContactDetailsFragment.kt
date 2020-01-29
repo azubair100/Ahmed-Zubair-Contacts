@@ -1,4 +1,4 @@
-package com.example.ahmedzubaircontacts.view
+package com.example.ahmedzubaircontacts.view.ui
 
 
 import android.annotation.SuppressLint
@@ -47,7 +47,9 @@ class ContactDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let { personId = ContactDetailsFragmentArgs.fromBundle(it).personId }
+        arguments?.let { personId = ContactDetailsFragmentArgs.fromBundle(
+            it
+        ).personId }
         removeCreateNewButtons()
         setUpViews()
         observeViewModel()

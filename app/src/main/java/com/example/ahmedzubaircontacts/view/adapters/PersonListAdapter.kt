@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.RvContactRowBinding
 import com.example.ahmedzubaircontacts.model.Person
-import com.example.ahmedzubaircontacts.view.ListFragmentDirections
+import com.example.ahmedzubaircontacts.view.ui.ListFragmentDirections
 import com.example.ahmedzubaircontacts.view.clicklisteners.PersonClickListener
 import kotlinx.android.synthetic.main.rv_contact_row.view.*
 

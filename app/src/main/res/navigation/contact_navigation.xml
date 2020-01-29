@@ -6,7 +6,7 @@
     app:startDestination="@id/listFragment">
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.ahmedzubaircontacts.view.ListFragment"
+        android:name="com.example.ahmedzubaircontacts.view.ui.ListFragment"
         android:label="ListFragment" >
         <action
             android:id="@+id/action_listFragment_to_contactDetailsFragment"
@@ -21,7 +21,7 @@
     </fragment>
     <fragment
         android:id="@+id/contactDetailsFragment"
-        android:name="com.example.ahmedzubaircontacts.view.ContactDetailsFragment"
+        android:name="com.example.ahmedzubaircontacts.view.ui.ContactDetailsFragment"
         android:label="ContactDetailsFragment" >
         <action
             android:id="@+id/action_contactDetailsFragment_to_listFragment"
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/newEditContactFragment"
-        android:name="com.example.ahmedzubaircontacts.view.NewContactFragment"
+        android:name="com.example.ahmedzubaircontacts.view.ui.NewContactFragment"
         android:label="NewEditContactFragment" >
         <argument
             android:name="personId"
