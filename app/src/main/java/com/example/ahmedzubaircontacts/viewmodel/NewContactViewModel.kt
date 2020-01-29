@@ -38,7 +38,7 @@ class NewContactViewModel(application: Application) : BaseViewModel(application)
         val phones = arrayListOf<Phone>()
         for(phoneString in list){
             val phoneDetail: List<String> = phoneString.split(" ".toRegex())
-            phones.add(Phone(personId, phoneDetail[0], phoneDetail[1]))
+            phones.add(Phone(personId, phoneDetail[0], phoneDetail[phoneDetail.size-1]))
         }
         return phones
     }
@@ -47,7 +47,7 @@ class NewContactViewModel(application: Application) : BaseViewModel(application)
         val emails = arrayListOf<Email>()
         for(emailString in list){
             val emailDetail: List<String> = emailString.split(" ".toRegex())
-            emails.add(Email(personId, emailDetail[0], emailDetail[1]))
+            emails.add(Email(personId, emailDetail[0], emailDetail[emailDetail.size-1]))
         }
         return emails
     }

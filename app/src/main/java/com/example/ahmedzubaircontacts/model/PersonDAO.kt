@@ -19,4 +19,7 @@ interface PersonDAO {
 
     @Query("SELECT * FROM person WHERE firstName LIKE :search OR lastName LIKE :search")
     suspend fun searchPersons(search: String): List<Person>
+
+    @Query("DELETE FROM person WHERE personId = :personId ")
+    suspend fun deletePerson(personId: Long)
 }

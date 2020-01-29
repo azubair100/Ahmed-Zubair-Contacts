@@ -47,7 +47,21 @@
                     android:textAllCaps="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_gravity="center_horizontal"/>
+
+                <Button
+                    android:id="@+id/deleteContactsBtn"
+                    android:text="@string/delete_contact"
+                    android:textAllCaps="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_gravity="center_horizontal"/>
 
             </LinearLayout>

@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addressTV"
-            tools:listitem="@layout/edit_contact_generic_row"/>
+            tools:listitem="@layout/new_contact_detail_row"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/createNewAddressBtn"

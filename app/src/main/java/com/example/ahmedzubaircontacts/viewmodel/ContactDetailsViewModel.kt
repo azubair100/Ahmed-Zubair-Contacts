@@ -19,4 +19,10 @@ class ContactDetailsViewModel(application: Application) : BaseViewModel(applicat
             addressesLiveData.value = ContactDatabase(getApplication()).addressDAO().findAllAddressesByPersonId(personId)
         }
     }
+
+    fun deleteContact(personId: Long){
+        launch {
+            ContactDatabase(getApplication()).personDAO().deletePerson(personId)
+        }
+    }
 }

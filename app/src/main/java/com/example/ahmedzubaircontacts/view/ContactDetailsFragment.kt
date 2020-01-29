@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentContactDetailsBinding
-import com.example.ahmedzubaircontacts.model.Person
 import com.example.ahmedzubaircontacts.view.adapters.ContactDetailsAdapter
 import com.example.ahmedzubaircontacts.viewmodel.ContactDetailsViewModel
 import kotlinx.android.synthetic.main.edit_contact_address.*
@@ -25,7 +25,6 @@ class ContactDetailsFragment : Fragment() {
     private lateinit var detailViewModel: ContactDetailsViewModel
     private var personId = 0L
     private lateinit var dataBinding: FragmentContactDetailsBinding
-    private var currentPerson: Person? = null
     private lateinit var phonesAdapter: ContactDetailsAdapter
     private lateinit var emailsAdapter: ContactDetailsAdapter
     private lateinit var addressesAdapter: ContactDetailsAdapter
@@ -50,7 +49,7 @@ class ContactDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let { personId = ContactDetailsFragmentArgs.fromBundle(it).personId }
         removeCreateNewButtons()
-        setUpRecyclerView()
+        setUpViews()
         observeViewModel()
         detailViewModel.getFullContact(personId)
     }
@@ -68,10 +67,7 @@ class ContactDetailsFragment : Fragment() {
 
     private fun observeViewModel(){
         detailViewModel.personLiveData.observe(viewLifecycleOwner, Observer{
-            it?.let { person ->
-                currentPerson = person
-                dataBinding.person = person
-            }
+            it?.let { person -> dataBinding.person = person }
         })
 
         detailViewModel.phonesLiveData.observe(viewLifecycleOwner, Observer {
@@ -90,7 +86,7 @@ class ContactDetailsFragment : Fragment() {
 
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpViews(){
         dataBinding.apply {
             phoneNumberRV.apply {
                 layoutManager = LinearLayoutManager(context)
@@ -103,6 +99,15 @@ class ContactDetailsFragment : Fragment() {
             addressRV.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = addressesAdapter
+            }
+
+            editContactsBtn.setOnClickListener {
+
+            }
+
+            deleteContactsBtn.setOnClickListener {
+                detailViewModel.deleteContact(personId)
+                it.findNavController().navigate(R.id.action_contactDetailsFragment_to_listFragment)
             }
         }
     }
