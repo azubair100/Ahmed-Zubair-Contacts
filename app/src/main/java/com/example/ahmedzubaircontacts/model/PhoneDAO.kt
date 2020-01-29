@@ -4,7 +4,7 @@ import androidx.room.*
 
 @Dao
 interface PhoneDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg phones: Phone)
 
     @Update

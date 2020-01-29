@@ -1,6 +1,7 @@
 package com.example.ahmedzubaircontacts.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.ahmedzubaircontacts.model.*
 import kotlinx.coroutines.launch
@@ -8,25 +9,27 @@ import kotlinx.coroutines.launch
 class NewContactViewModel(application: Application) : BaseViewModel(application) {
     var contactId: MutableLiveData<Long> = MutableLiveData()
 
-    fun saveContact(person: Person, phones: ArrayList<Phone>?, emails: ArrayList<Email>?, addresses: ArrayList<Address>?){
+    fun saveContact(person: Person, phones: ArrayList<Phone>?, emails: ArrayList<Email>?, addresses: ArrayList<Address>?, isUpdate: Boolean){
         launch {
             val personDao = ContactDatabase(getApplication()).personDAO()
+
+            if(isUpdate) personDao.deletePerson(person.personId)
             val personId = personDao.insert(person)
 
             personId.let {
-                if(phones.isNullOrEmpty()){
+                if(!phones.isNullOrEmpty()){
                     val phoneDao = ContactDatabase(getApplication()).phoneDAO()
-                    val idAdjustedPhones = assignPersonIdToPhones(phones!!, personId)
+                    val idAdjustedPhones = assignPersonIdToPhones(phones, personId)
                     phoneDao.insertAll(*idAdjustedPhones.toTypedArray())
                 }
-                if(emails.isNullOrEmpty()){
+                if(!emails.isNullOrEmpty()){
                     val emailDao = ContactDatabase(getApplication()).emailDAO()
-                    val idAdjustedEmails = assignPersonIdToEmails(emails!!, personId)
+                    val idAdjustedEmails = assignPersonIdToEmails(emails, personId)
                     emailDao.insertAll(*idAdjustedEmails.toTypedArray())
                 }
-                if(addresses.isNullOrEmpty()){
+                if(!addresses.isNullOrEmpty()){
                     val addressDao = ContactDatabase(getApplication()).addressDAO()
-                    val idAdjustedAddresses = assignPersonToAddresses(addresses!!, personId)
+                    val idAdjustedAddresses = assignPersonToAddresses(addresses, personId)
                     addressDao.insertAll(*idAdjustedAddresses.toTypedArray())
                 }
                 contactId.value = personId

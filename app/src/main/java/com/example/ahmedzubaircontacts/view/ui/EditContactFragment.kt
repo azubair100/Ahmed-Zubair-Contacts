@@ -42,6 +42,7 @@ class EditContactFragment : Fragment() {
     private lateinit var newContactAdapterPhone: NewContactAdapter
     private lateinit var newContactAdapterEmail: NewContactAdapter
     private lateinit var newContactAdapterAddress: NewContactAdapter
+    private lateinit var currentPerson: Person
     private var phonesDisplay = arrayListOf<Phone>()
     private var emailsDisplay = arrayListOf<Email>()
     private var addressesDisplay = arrayListOf<Address>()
@@ -115,7 +116,10 @@ class EditContactFragment : Fragment() {
 
     private fun observeDetailViewModel() {
         detailViewModel.personLiveData.observe(viewLifecycleOwner, Observer{
-            it?.let { person -> dataBinding.person = person }
+            it?.let { person ->
+                currentPerson = person
+                dataBinding.person = currentPerson
+            }
         })
 
         detailViewModel.phonesLiveData.observe(viewLifecycleOwner, Observer {
@@ -139,7 +143,6 @@ class EditContactFragment : Fragment() {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun setUpButtons(){
         saveBtn.isEnabled = true
         createNewEmailBtn.setOnClickListener{
@@ -160,12 +163,19 @@ class EditContactFragment : Fragment() {
 
         saveBtn.setOnClickListener {
             //todo hideKeyboard() put in the activity
-            val person = Person(firstNameETI.text.toString(), lastNameETI.text.toString(), birthdayETI.text.toString())
+            if(currentPerson == null){
+                currentPerson = Person(firstNameETI.text.toString(), lastNameETI.text.toString(), birthdayETI.text.toString())
+            } else{
+                currentPerson.firstName = firstNameETI.text.toString()
+                currentPerson.lastName = lastNameETI.text.toString()
+                currentPerson.birthday = birthdayETI.text.toString()
+            }
+
 
             val phones = newContactAdapterPhone.list as? ArrayList<Phone>
             val emails = newContactAdapterEmail.list as? ArrayList<Email>
             val addresses = newContactAdapterAddress.list as? ArrayList<Address>
-            newContactViewModel.saveContact(person, phones, emails, addresses)
+            newContactViewModel.saveContact(currentPerson, phones, emails, addresses, true)
             newContactPB.visibility = View.VISIBLE
             nestedScrollView.visibility = View.INVISIBLE
             cancelBtn.visibility = View.INVISIBLE

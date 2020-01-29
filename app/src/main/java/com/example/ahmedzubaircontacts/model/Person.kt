@@ -2,13 +2,12 @@ package com.example.ahmedzubaircontacts.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
 @Entity(tableName = "person")
 data class Person(
-    val firstName : String,
-    val lastName : String?,
-    val birthday : String?): Serializable {
+    var firstName : String,
+    var lastName : String?,
+    var birthday : String?) {
 
     @PrimaryKey(autoGenerate = true) var personId: Long = 0L
 }

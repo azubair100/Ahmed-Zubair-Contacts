@@ -1,10 +1,11 @@
 package com.example.ahmedzubaircontacts.model
 
 import androidx.room.*
+import androidx.room.OnConflictStrategy.REPLACE
 
 @Dao
 interface EmailDAO {
-    @Insert
+    @Insert(onConflict = REPLACE)
     suspend fun insertAll(vararg emails: Email)
 
     @Update

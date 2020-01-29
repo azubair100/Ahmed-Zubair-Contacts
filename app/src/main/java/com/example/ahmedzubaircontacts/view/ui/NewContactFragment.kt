@@ -149,7 +149,7 @@ class NewContactFragment : Fragment() {
             val phones = newContactAdapterPhone.list as? ArrayList<Phone>
             val emails = newContactAdapterEmail.list as? ArrayList<Email>
             val addresses = newContactAdapterAddress.list as? ArrayList<Address>
-            newContactViewModel.saveContact(person, phones, emails, addresses)
+            newContactViewModel.saveContact(person, phones, emails, addresses, false)
             newContactPB.visibility = View.VISIBLE
             nestedScrollView.visibility = View.INVISIBLE
             cancelBtn.visibility = View.INVISIBLE
@@ -177,22 +177,26 @@ class NewContactFragment : Fragment() {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+
     @Subscribe
     fun getNewPhone(phone: Phone){
-        phonesDisplay.add(phone)
-        newContactAdapterPhone.updateNewContactPhone(phonesDisplay)
+        var phones = newContactAdapterPhone.list as? ArrayList<Phone>
+        phones?.add(phone)
+        newContactAdapterPhone.notifyDataSetChanged()
     }
 
     @Subscribe
     fun getNewEmail(email: Email){
-        emailsDisplay.add(email)
-        newContactAdapterEmail.updateNewContactDetailEmail(emailsDisplay)
+        var emails = newContactAdapterEmail.list as? ArrayList<Email>
+        emails?.add(email)
+        newContactAdapterPhone.notifyDataSetChanged()
     }
 
     @Subscribe
     fun getNewAddress(address: Address){
-        addressesDisplay.add(address)
-        newContactAdapterAddress.updateNewContactDetailAddress(addressesDisplay)
+        var addresses = newContactAdapterAddress.list as? ArrayList<Address>
+        addresses?.add(address)
+        newContactAdapterAddress.notifyDataSetChanged()
     }
 
 

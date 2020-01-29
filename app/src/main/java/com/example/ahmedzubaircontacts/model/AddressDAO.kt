@@ -4,7 +4,7 @@ import androidx.room.*
 
 @Dao
 interface AddressDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg addresses: Address)
 
     @Update
