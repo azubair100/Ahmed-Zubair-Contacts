@@ -13,7 +13,10 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/newPhoneCV"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        android:layout_margin="2dp"
+        android:padding="8dp">
 
 
         <RelativeLayout
@@ -22,13 +25,13 @@
 
             <TextView
                 android:id="@+id/textET"
+                style="@style/Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="65dp"
                 android:text="@{contactDetail}"
-                android:textSize="24sp"
                 android:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>

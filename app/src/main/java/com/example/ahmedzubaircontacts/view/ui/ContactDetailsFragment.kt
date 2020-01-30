@@ -129,8 +129,8 @@ class ContactDetailsFragment : Fragment() {
 
     @SuppressLint("RestrictedApi")
     private fun removeCreateNewButtons() {
-        createNewPhoneBtn.visibility = View.GONE
-        createNewEmailBtn.visibility = View.GONE
-        createNewAddressBtn.visibility = View.GONE
+        createNewPhoneBtn.visibility = View.INVISIBLE
+        createNewEmailBtn.visibility = View.INVISIBLE
+        createNewAddressBtn.visibility = View.INVISIBLE
     }
 }

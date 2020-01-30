@@ -26,10 +26,7 @@
                 android:background="@android:color/transparent"
                 android:text="@string/app_name"
                 android:textColor="@color/colorAccent"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                tools:layout_editor_absoluteX="89dp"
-                tools:layout_editor_absoluteY="13dp" />
+                style="@style/Title"/>
         </androidx.appcompat.widget.Toolbar>
 
         <SearchView
@@ -37,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/cardview_light_background"
+            android:background="@color/card_bg_color"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/listFragmentTB" />
 

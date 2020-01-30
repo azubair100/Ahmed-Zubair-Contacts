@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -23,10 +23,14 @@
     </data>
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        android:layout_margin="2dp"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/detailsTV"
+            style="@style/Text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoSizeTextType="uniform"
