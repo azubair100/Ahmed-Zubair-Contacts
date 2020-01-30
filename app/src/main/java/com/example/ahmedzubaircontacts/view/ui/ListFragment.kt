@@ -124,6 +124,11 @@ class ListFragment : Fragment() {
                                 Navigation.findNavController(it).navigate(action)
                             }
                         }
+                        R.id.goToHelpFragment -> {
+                            view?. let{
+                                Navigation.findNavController(it).navigate(ListFragmentDirections.actionListFragmentToHelpFragment())
+                            }
+                        }
                     }
                     return false
                 }

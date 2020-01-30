@@ -17,23 +17,28 @@ class NewContactViewModel(application: Application) : BaseViewModel(application)
     ) {
         launch {
             val personDao = ContactDatabase(getApplication()).personDAO()
+            val phoneDao = ContactDatabase(getApplication()).phoneDAO()
+            val emailDao = ContactDatabase(getApplication()).emailDAO()
+            val addressDao = ContactDatabase(getApplication()).addressDAO()
 
-            if (isUpdate) personDao.deletePerson(person.personId)
+            if (isUpdate) {
+                phoneDao.deleteOldPhones(person.personId)
+                personDao.deletePerson(person.personId)
+                emailDao.deleteOldEmail(person.personId)
+                addressDao.deleteOldAddress(person.personId)
+            }
             val personId = personDao.insert(person)
 
             personId.let {
                 if (!phones.isNullOrEmpty()) {
-                    val phoneDao = ContactDatabase(getApplication()).phoneDAO()
                     val idAdjustedPhones = assignPersonIdToPhones(phones, personId)
                     phoneDao.insertAll(*idAdjustedPhones.toTypedArray())
                 }
                 if (!emails.isNullOrEmpty()) {
-                    val emailDao = ContactDatabase(getApplication()).emailDAO()
                     val idAdjustedEmails = assignPersonIdToEmails(emails, personId)
                     emailDao.insertAll(*idAdjustedEmails.toTypedArray())
                 }
                 if (!addresses.isNullOrEmpty()) {
-                    val addressDao = ContactDatabase(getApplication()).addressDAO()
                     val idAdjustedAddresses = assignPersonToAddresses(addresses, personId)
                     addressDao.insertAll(*idAdjustedAddresses.toTypedArray())
                 }

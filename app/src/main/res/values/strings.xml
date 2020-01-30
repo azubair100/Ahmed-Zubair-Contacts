@@ -36,4 +36,16 @@
     <string name="call">Call</string>
     <string name="text">Text</string>
     <string name="add">Add</string>
+    <string name="help_page">Help Page</string>
+    <string name="help_screen_description">Welcome to help page. Hopefully this makes the usage of the app easier. All fields with a * next to it is required. </string>
+    <string name="list_page">List Page</string>
+    <string name="list_page_info">To search contacts, make sure to click on the search icon on the top left. To create new contact, click on the top right menu icon and the option above the help option. To see more details about a contact, click on the related row.</string>
+    <string name="details_page">Details Page</string>
+    <string name="details_page_info">Clicking on a phone number to send a text or call. App requires permission to enable calling. Clicking on emails will direct you to email and addresses will point to Google maps</string>
+    <string name="new_or_edit_contact">New or Edit Contact</string>
+    <string name="new_edit_contact_info">New and Edit screens are similar however, during edit screen data is pre populated. You can clear a row by clicking on the X button next to each row.</string>
+    <string name="help">Help</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -4,12 +4,15 @@ package com.example.ahmedzubaircontacts.view.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
@@ -17,6 +20,8 @@ import com.example.ahmedzubaircontacts.databinding.FragmentContactDetailsBinding
 import com.example.ahmedzubaircontacts.util.Util
 import com.example.ahmedzubaircontacts.view.adapters.ContactDetailsAdapter
 import com.example.ahmedzubaircontacts.viewmodel.ContactDetailsViewModel
+import kotlinx.android.synthetic.main.fragment_contact_details.*
+import kotlinx.android.synthetic.main.fragment_contact_details_app_bar.*
 import kotlinx.android.synthetic.main.section_person_address.*
 import kotlinx.android.synthetic.main.section_person_email.*
 import kotlinx.android.synthetic.main.section_person_phone.*
@@ -92,37 +97,65 @@ class ContactDetailsFragment : Fragment() {
 
     private fun setUpViews() {
         dataBinding.apply {
-            phoneNumberRV.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = phonesAdapter
-                phonesAdapter.onPhoneItemClick = {
-                    Util.callOrTextAlert(context, it.number)
-                }
-            }
-            emailRV.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = emailsAdapter
-                emailsAdapter.onEmailItemClick = { Util.sendEmail(context, it.address) }
-            }
-            addressRV.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = addressesAdapter
-                addressesAdapter.onAddressItemClick = {
-                    Util.goToGoogleMaps(context, it.street, it.city)
-                }
-            }
+            setUpToolBar()
+            setUpRecyclerViews()
+            setUpButtons()
+        }
+    }
 
-            editContactsBtn.setOnClickListener {
-                val action =
-                    ContactDetailsFragmentDirections.actionContactDetailsFragmentToEditContactFragment()
-                action.personId = personId
-                findNavController().navigate(action)
-            }
+    private fun setUpButtons(){
+        editContactsBtn.setOnClickListener {
+            val action =
+                ContactDetailsFragmentDirections.actionContactDetailsFragmentToEditContactFragment()
+            action.personId = personId
+            findNavController().navigate(action)
+        }
 
-            deleteContactsBtn.setOnClickListener {
-                detailViewModel.deleteContact(personId)
-                findNavController().navigate(R.id.action_contactDetailsFragment_to_listFragment)
+        deleteContactsBtn.setOnClickListener {
+            detailViewModel.deleteContact(personId)
+            findNavController().navigate(R.id.action_contactDetailsFragment_to_listFragment)
+        }
+    }
+
+    private fun setUpRecyclerViews(){
+        phoneNumberRV.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = phonesAdapter
+            phonesAdapter.onPhoneItemClick = {
+                Util.callOrTextAlert(context, it.number)
             }
+        }
+        emailRV.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = emailsAdapter
+            emailsAdapter.onEmailItemClick = { Util.sendEmail(context, it.address) }
+        }
+        addressRV.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = addressesAdapter
+            addressesAdapter.onAddressItemClick = {
+                Util.goToGoogleMaps(context, it.street, it.city)
+            }
+        }
+    }
+
+    private fun setUpToolBar() {
+        contactDetailTB.apply {
+            inflateMenu(R.menu.help)
+            setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener,
+                Toolbar.OnMenuItemClickListener {
+                override fun onMenuItemClick(item: MenuItem): Boolean {
+                    when (item.itemId) {
+
+                        R.id.goToHelpFragment -> {
+                            view?. let{
+                                Navigation.findNavController(it).navigate(ContactDetailsFragmentDirections.actionContactDetailsFragmentToHelpFragment())
+                            }
+                        }
+                    }
+                    return false
+                }
+            })
         }
     }
 

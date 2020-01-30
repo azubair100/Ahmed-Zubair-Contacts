@@ -15,30 +15,47 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/newFragmentTB"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/newFragmentTBTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/colorAccent"
+                style="@style/Title"/>
+        </androidx.appcompat.widget.Toolbar>
+
         <Button
             android:id="@+id/cancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:textSize="24sp"
             android:text="@android:string/cancel"
             android:textAllCaps="false"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/newFragmentTB" />
 
         <Button
             android:id="@+id/saveBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="@string/save"
-            android:textSize="24sp"
             android:enabled="false"
+            android:text="@string/save"
             android:textAllCaps="false"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/newFragmentTB" />
 
         <ProgressBar
             android:id="@+id/newContactPB"

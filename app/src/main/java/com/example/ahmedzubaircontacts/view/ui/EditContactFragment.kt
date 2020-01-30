@@ -3,12 +3,15 @@ package com.example.ahmedzubaircontacts.view.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
@@ -55,7 +58,6 @@ class EditContactFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         dataBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_new_contact, container, false)
         return dataBinding.root
@@ -135,6 +137,27 @@ class EditContactFragment : Fragment() {
     private fun setUpViews() {
         dataBinding.apply {
             setUpButtons()
+            setUpToolBar()
+        }
+    }
+
+    private fun setUpToolBar() {
+        newFragmentTB.apply {
+            inflateMenu(R.menu.help)
+            setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener,
+                Toolbar.OnMenuItemClickListener {
+                override fun onMenuItemClick(item: MenuItem): Boolean {
+                    when (item.itemId) {
+
+                        R.id.goToHelpFragment -> {
+                            view?. let{
+                                Navigation.findNavController(it).navigate(EditContactFragmentDirections.actionEditContactFragmentToHelpFragment())
+                            }
+                        }
+                    }
+                    return false
+                }
+            })
         }
     }
 

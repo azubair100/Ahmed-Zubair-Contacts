@@ -5,13 +5,16 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +30,7 @@ import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Bus
 import com.squareup.otto.Subscribe
+import kotlinx.android.synthetic.main.fragment_contact_details_app_bar.*
 import kotlinx.android.synthetic.main.fragment_new_contact.*
 import kotlinx.android.synthetic.main.section_person.*
 import kotlinx.android.synthetic.main.section_person_address.*
@@ -87,6 +91,7 @@ class NewContactFragment : Fragment() {
             makeFirstNameMandatory()
             setUpButtons()
             setUpRecyclerView()
+            setUpToolBar()
         }
     }
 
@@ -109,6 +114,26 @@ class NewContactFragment : Fragment() {
                 saveBtn.visibility = View.VISIBLE
             }
         })
+    }
+
+    private fun setUpToolBar() {
+        newFragmentTB.apply {
+            inflateMenu(R.menu.help)
+            setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener,
+                Toolbar.OnMenuItemClickListener {
+                override fun onMenuItemClick(item: MenuItem): Boolean {
+                    when (item.itemId) {
+
+                        R.id.goToHelpFragment -> {
+                            view?. let{
+                                Navigation.findNavController(it).navigate(NewContactFragmentDirections.actionNewEditContactFragmentToHelpFragment())
+                            }
+                        }
+                    }
+                    return false
+                }
+            })
+        }
     }
 
     private fun setUpRecyclerView() {
