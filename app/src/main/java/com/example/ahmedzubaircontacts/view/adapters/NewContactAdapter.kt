@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ahmedzubaircontacts.R
-import com.example.ahmedzubaircontacts.databinding.NewContactDetailRowBinding
+import com.example.ahmedzubaircontacts.databinding.RowAddNewContactDetailsBinding
 import com.example.ahmedzubaircontacts.model.Address
 import com.example.ahmedzubaircontacts.model.Email
 import com.example.ahmedzubaircontacts.model.Phone
 
-class NewContactAdapter(var list: ArrayList<Any>):
-    RecyclerView.Adapter<NewContactAdapter.ContactDetailsViewHolder>(){
+class NewContactAdapter(var list: ArrayList<Any>) :
+    RecyclerView.Adapter<NewContactAdapter.ContactDetailsViewHolder>() {
 
     fun updateNewContactPhone(newList: ArrayList<Phone>) {
         list.clear()
@@ -36,7 +36,7 @@ class NewContactAdapter(var list: ArrayList<Any>):
         ContactDetailsViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.new_contact_detail_row, parent, false
+                R.layout.row_add_new_contact_details, parent, false
             )
         )
 
@@ -46,15 +46,16 @@ class NewContactAdapter(var list: ArrayList<Any>):
         val obj = list[position]
         var detail = ""
 
-        when(obj){
+        when (obj) {
             is Phone -> detail = obj.type + ": " + obj.number
             is Email -> detail = obj.type + ": " + obj.address
-            is Address -> detail = obj.type + ": " + obj.street + ", " + obj.city + ", " + obj.state + "-" + obj.zip
+            is Address -> detail =
+                obj.type + ": " + obj.street + ", " + obj.city + ", " + obj.state + "-" + obj.zip
         }
         holder.view.contactDetail = detail
 
 
-        holder.view.clearRowBtn.setOnClickListener{
+        holder.view.clearRowBtn.setOnClickListener {
             list.removeAt(position)
             notifyItemRemoved(position)
             notifyItemRangeChanged(position, list.size)
@@ -63,6 +64,7 @@ class NewContactAdapter(var list: ArrayList<Any>):
 
     }
 
-    class ContactDetailsViewHolder(var view: NewContactDetailRowBinding): RecyclerView.ViewHolder(view.root)
+    class ContactDetailsViewHolder(var view: RowAddNewContactDetailsBinding) :
+        RecyclerView.ViewHolder(view.root)
 
 }

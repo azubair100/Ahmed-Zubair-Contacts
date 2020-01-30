@@ -1,21 +1,17 @@
 package com.example.ahmedzubaircontacts.view.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ahmedzubaircontacts.R
-import com.example.ahmedzubaircontacts.databinding.RvDisplayContactsGenericRowBinding
+import com.example.ahmedzubaircontacts.databinding.RowContactDetailsBinding
 import com.example.ahmedzubaircontacts.model.Address
 import com.example.ahmedzubaircontacts.model.Email
 import com.example.ahmedzubaircontacts.model.Phone
-import com.example.ahmedzubaircontacts.view.clicklisteners.AddressClickListener
-import com.example.ahmedzubaircontacts.view.clicklisteners.EmailClickListener
-import com.example.ahmedzubaircontacts.view.clicklisteners.PhoneClickListener
 
-class ContactDetailsAdapter(private val list: ArrayList<Any>):
-    RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>(){
+class ContactDetailsAdapter(private val list: ArrayList<Any>) :
+    RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>() {
 
     var onPhoneItemClick: ((Phone) -> Unit)? = null
     var onEmailItemClick: ((Email) -> Unit)? = null
@@ -29,7 +25,7 @@ class ContactDetailsAdapter(private val list: ArrayList<Any>):
         ContactDetailsViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.rv_display_contacts_generic_row, parent, false
+                R.layout.row_contact_details, parent, false
             )
         )
 
@@ -39,7 +35,7 @@ class ContactDetailsAdapter(private val list: ArrayList<Any>):
     override fun onBindViewHolder(holder: ContactDetailsViewHolder, position: Int) {
         val obj = list[position]
         var detail = ""
-        when(obj){
+        when (obj) {
             is Phone -> {
                 isPhone = true
                 detail = obj.type + ": " + obj.number
@@ -76,22 +72,23 @@ class ContactDetailsAdapter(private val list: ArrayList<Any>):
         notifyDataSetChanged()
     }
 
-    inner class ContactDetailsViewHolder(var view: RvDisplayContactsGenericRowBinding): RecyclerView.ViewHolder(view.root){
+    inner class ContactDetailsViewHolder(var view: RowContactDetailsBinding) :
+        RecyclerView.ViewHolder(view.root) {
         init {
             itemView.setOnClickListener {
 
-               if(isPhone) {
-                   val phones = list  as? ArrayList<Phone>
-                   onPhoneItemClick?.invoke(phones!![adapterPosition])
-               }
+                if (isPhone) {
+                    val phones = list as? ArrayList<Phone>
+                    onPhoneItemClick?.invoke(phones!![adapterPosition])
+                }
 
-                if(isEmail) {
-                    val emails = list  as? ArrayList<Email>
+                if (isEmail) {
+                    val emails = list as? ArrayList<Email>
                     onEmailItemClick?.invoke(emails!![adapterPosition])
                 }
 
-                if(isAddress) {
-                    val addresses = list  as? ArrayList<Address>
+                if (isAddress) {
+                    val addresses = list as? ArrayList<Address>
                     onAddressItemClick?.invoke(addresses!![adapterPosition])
                 }
             }

@@ -8,16 +8,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ahmedzubaircontacts.R
-import com.example.ahmedzubaircontacts.databinding.RvContactRowBinding
+import com.example.ahmedzubaircontacts.databinding.RowPersonBinding
 import com.example.ahmedzubaircontacts.model.Person
-import com.example.ahmedzubaircontacts.view.ui.ListFragmentDirections
 import com.example.ahmedzubaircontacts.view.clicklisteners.PersonClickListener
-import kotlinx.android.synthetic.main.rv_contact_row.view.*
+import com.example.ahmedzubaircontacts.view.ui.ListFragmentDirections
+import kotlinx.android.synthetic.main.row_person.view.*
 
-class PersonListAdapter(private val personList: ArrayList<Person>):
-    RecyclerView.Adapter<PersonListAdapter.PersonViewHolder>(), PersonClickListener{
+class PersonListAdapter(private val personList: ArrayList<Person>) :
+    RecyclerView.Adapter<PersonListAdapter.PersonViewHolder>(), PersonClickListener {
 
-    fun updatePersonList(newList: List<Person>){
+    fun updatePersonList(newList: List<Person>) {
         personList.clear()
         personList.addAll(newList)
         notifyDataSetChanged()
@@ -26,15 +26,16 @@ class PersonListAdapter(private val personList: ArrayList<Person>):
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder =
         PersonViewHolder(
             DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-                R.layout.rv_contact_row, parent, false)
+                LayoutInflater.from(parent.context),
+                R.layout.row_person, parent, false
+            )
         )
 
 
     override fun getItemCount(): Int = personList.size
 
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
-        Log.d("test ", "--" + personList[position].personId )
+        Log.d("test ", "--" + personList[position].personId)
         holder.view.person = personList[position]
         holder.view.listener = this
     }
@@ -45,6 +46,6 @@ class PersonListAdapter(private val personList: ArrayList<Person>):
         Navigation.findNavController(view).navigate(action)
     }
 
-    class PersonViewHolder(var view: RvContactRowBinding) : RecyclerView.ViewHolder(view.root)
+    class PersonViewHolder(var view: RowPersonBinding) : RecyclerView.ViewHolder(view.root)
 
 }

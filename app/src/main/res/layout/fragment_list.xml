@@ -23,11 +23,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="#07000000"
+                android:background="@android:color/transparent"
                 android:text="@string/app_name"
                 android:textColor="@color/colorAccent"
                 android:textSize="22sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="89dp"
+                tools:layout_editor_absoluteY="13dp" />
         </androidx.appcompat.widget.Toolbar>
 
         <SearchView
@@ -48,7 +50,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/listFragmentSV"
-            tools:listitem="@layout/rv_contact_row"/>
+            tools:listitem="@layout/row_person"/>
 
         <ProgressBar
             android:id="@+id/listFragmentPB"

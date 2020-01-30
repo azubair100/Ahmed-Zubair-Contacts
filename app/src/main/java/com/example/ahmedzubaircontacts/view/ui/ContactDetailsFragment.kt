@@ -2,28 +2,24 @@ package com.example.ahmedzubaircontacts.view.ui
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentContactDetailsBinding
 import com.example.ahmedzubaircontacts.util.Util
 import com.example.ahmedzubaircontacts.view.adapters.ContactDetailsAdapter
 import com.example.ahmedzubaircontacts.viewmodel.ContactDetailsViewModel
-import kotlinx.android.synthetic.main.edit_contact_address.*
-import kotlinx.android.synthetic.main.edit_contact_email.*
-import kotlinx.android.synthetic.main.edit_contact_phone.*
+import kotlinx.android.synthetic.main.section_person_address.*
+import kotlinx.android.synthetic.main.section_person_email.*
+import kotlinx.android.synthetic.main.section_person_phone.*
 
 class ContactDetailsFragment : Fragment() {
     private lateinit var detailViewModel: ContactDetailsViewModel
@@ -38,7 +34,8 @@ class ContactDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         dataBinding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_contact_details, container, false)
+            inflater, R.layout.fragment_contact_details, container, false
+        )
         return dataBinding.root
     }
 
@@ -51,9 +48,11 @@ class ContactDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let { personId = ContactDetailsFragmentArgs.fromBundle(
-            it
-        ).personId }
+        arguments?.let {
+            personId = ContactDetailsFragmentArgs.fromBundle(
+                it
+            ).personId
+        }
         removeCreateNewButtons()
         setUpViews()
         observeViewModel()
@@ -64,57 +63,58 @@ class ContactDetailsFragment : Fragment() {
         super.onDestroyView()
         dataBinding.unbind()
     }
-    
-    private fun setUpAdapters(){
+
+    private fun setUpAdapters() {
         phonesAdapter = ContactDetailsAdapter(arrayListOf())
         emailsAdapter = ContactDetailsAdapter(arrayListOf())
         addressesAdapter = ContactDetailsAdapter(arrayListOf())
     }
 
-    private fun observeViewModel(){
-        detailViewModel.personLiveData.observe(viewLifecycleOwner, Observer{
+    private fun observeViewModel() {
+        detailViewModel.personLiveData.observe(viewLifecycleOwner, Observer {
             it?.let { person -> dataBinding.person = person }
         })
 
         detailViewModel.phonesLiveData.observe(viewLifecycleOwner, Observer {
-            if(!it.isNullOrEmpty()) phonesAdapter.updateContactDetailsPhone(it)
+            if (!it.isNullOrEmpty()) phonesAdapter.updateContactDetailsPhone(it)
             else editContactPhoneContainer.visibility = View.GONE
         })
 
         detailViewModel.emailsLiveData.observe(viewLifecycleOwner, Observer {
-            if(!it.isNullOrEmpty()) emailsAdapter.updateContactDetailsEmail(it)
+            if (!it.isNullOrEmpty()) emailsAdapter.updateContactDetailsEmail(it)
             else editContactEmailContainer.visibility = View.GONE
         })
         detailViewModel.addressesLiveData.observe(viewLifecycleOwner, Observer {
-            if(!it.isNullOrEmpty()) addressesAdapter.updateContactDetailsAddress(it)
+            if (!it.isNullOrEmpty()) addressesAdapter.updateContactDetailsAddress(it)
             else editContactAddressContainer.visibility = View.GONE
         })
     }
 
-    private fun setUpViews(){
+    private fun setUpViews() {
         dataBinding.apply {
             phoneNumberRV.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = phonesAdapter
-                phonesAdapter.onPhoneItemClick ={
+                phonesAdapter.onPhoneItemClick = {
                     Util.callOrTextAlert(context, it.number)
                 }
             }
             emailRV.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = emailsAdapter
-                emailsAdapter.onEmailItemClick ={ Util.sendEmail(context, it.address) }
+                emailsAdapter.onEmailItemClick = { Util.sendEmail(context, it.address) }
             }
             addressRV.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = addressesAdapter
-                addressesAdapter.onAddressItemClick ={
+                addressesAdapter.onAddressItemClick = {
                     Util.goToGoogleMaps(context, it.street, it.city)
                 }
             }
 
             editContactsBtn.setOnClickListener {
-                val action = ContactDetailsFragmentDirections.actionContactDetailsFragmentToEditContactFragment()
+                val action =
+                    ContactDetailsFragmentDirections.actionContactDetailsFragmentToEditContactFragment()
                 action.personId = personId
                 findNavController().navigate(action)
             }
@@ -128,7 +128,7 @@ class ContactDetailsFragment : Fragment() {
 
 
     @SuppressLint("RestrictedApi")
-    private fun removeCreateNewButtons(){
+    private fun removeCreateNewButtons() {
         createNewPhoneBtn.visibility = View.GONE
         createNewEmailBtn.visibility = View.GONE
         createNewAddressBtn.visibility = View.GONE

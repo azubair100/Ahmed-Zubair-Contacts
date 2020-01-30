@@ -3,16 +3,15 @@ package com.example.ahmedzubaircontacts.view.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentNewContactBinding
 import com.example.ahmedzubaircontacts.model.Address
@@ -26,15 +25,15 @@ import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Bus
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.edit_contact_address.*
-import kotlinx.android.synthetic.main.edit_contact_basic_info.*
-import kotlinx.android.synthetic.main.edit_contact_email.*
-import kotlinx.android.synthetic.main.edit_contact_phone.*
 import kotlinx.android.synthetic.main.fragment_new_contact.*
+import kotlinx.android.synthetic.main.section_person.*
+import kotlinx.android.synthetic.main.section_person_address.*
+import kotlinx.android.synthetic.main.section_person_email.*
+import kotlinx.android.synthetic.main.section_person_phone.*
 
 @Suppress("UNCHECKED_CAST")
 class EditContactFragment : Fragment() {
-    private var personId : Long = 0L
+    private var personId: Long = 0L
     private lateinit var detailViewModel: ContactDetailsViewModel
     private lateinit var newContactViewModel: NewContactViewModel
     private lateinit var dataBinding: FragmentNewContactBinding
@@ -61,7 +60,8 @@ class EditContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_contact, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_new_contact, container, false)
         return dataBinding.root
     }
 
@@ -92,13 +92,14 @@ class EditContactFragment : Fragment() {
 
     private fun observeNewContactViewModel() {
         newContactViewModel.contactId.observe(viewLifecycleOwner, Observer {
-            if(it != null || it != 0L){
-                val action = EditContactFragmentDirections.actionEditContactFragmentToContactDetailsFragment()
+            if (it != null || it != 0L) {
+                val action =
+                    EditContactFragmentDirections.actionEditContactFragmentToContactDetailsFragment()
                 action.personId = personId
                 findNavController().navigate(action)
-            }
-            else{
-                Snackbar.make(it, getString(R.string.error_contact_saving), Snackbar.LENGTH_LONG).show()
+            } else {
+                Snackbar.make(it, getString(R.string.error_contact_saving), Snackbar.LENGTH_LONG)
+                    .show()
                 newContactPB.visibility = View.GONE
                 nestedScrollView.visibility = View.VISIBLE
                 cancelBtn.visibility = View.VISIBLE
@@ -107,14 +108,14 @@ class EditContactFragment : Fragment() {
         })
     }
 
-    private fun setUpAdapters(){
+    private fun setUpAdapters() {
         newContactAdapterPhone = NewContactAdapter(arrayListOf())
         newContactAdapterEmail = NewContactAdapter(arrayListOf())
         newContactAdapterAddress = NewContactAdapter(arrayListOf())
     }
 
     private fun observeDetailViewModel() {
-        detailViewModel.personLiveData.observe(viewLifecycleOwner, Observer{
+        detailViewModel.personLiveData.observe(viewLifecycleOwner, Observer {
             it?.let { person ->
                 currentPerson = person
                 dataBinding.person = currentPerson
@@ -122,19 +123,23 @@ class EditContactFragment : Fragment() {
         })
 
         detailViewModel.phonesLiveData.observe(viewLifecycleOwner, Observer {
-            Log.d("displayTest", "detailViewModel.phonesLiveData list<phone> size == " + it.size + " <--" )
+            Log.d(
+                "displayTest",
+                "detailViewModel.phonesLiveData list<phone> size == " + it.size + " <--"
+            )
 
-            if(!it.isNullOrEmpty()) {
+            if (!it.isNullOrEmpty()) {
                 newContactAdapterPhone.updateNewContactPhone(it)
             }
         })
 
         detailViewModel.emailsLiveData.observe(viewLifecycleOwner, Observer {
-            if(!it.isNullOrEmpty()) newContactAdapterEmail.updateNewContactDetailEmail(it)
+            if (!it.isNullOrEmpty()) newContactAdapterEmail.updateNewContactDetailEmail(it)
         })
         detailViewModel.addressesLiveData.observe(viewLifecycleOwner, Observer {
-            if(!it.isNullOrEmpty()) newContactAdapterAddress.updateNewContactDetailAddress(it)
-        })    }
+            if (!it.isNullOrEmpty()) newContactAdapterAddress.updateNewContactDetailAddress(it)
+        })
+    }
 
     private fun setUpViews() {
         dataBinding.apply {
@@ -142,9 +147,9 @@ class EditContactFragment : Fragment() {
         }
     }
 
-    private fun setUpButtons(){
+    private fun setUpButtons() {
         saveBtn.isEnabled = true
-        createNewEmailBtn.setOnClickListener{
+        createNewEmailBtn.setOnClickListener {
             Util.newEmailAlert(context!!, bus)
         }
         createNewPhoneBtn.setOnClickListener {
@@ -154,17 +159,21 @@ class EditContactFragment : Fragment() {
             Util.newAddressAlert(context!!, bus)
         }
 
-        cancelBtn.setOnClickListener{
-            val action = EditContactFragmentDirections.actionEditContactFragmentToContactDetailsFragment()
+        cancelBtn.setOnClickListener {
+            val action =
+                EditContactFragmentDirections.actionEditContactFragmentToContactDetailsFragment()
             action.personId = personId
             findNavController().navigate(action)
         }
 
         saveBtn.setOnClickListener {
-            //todo hideKeyboard() put in the activity
-            if(currentPerson == null){
-                currentPerson = Person(firstNameETI.text.toString(), lastNameETI.text.toString(), birthdayETI.text.toString())
-            } else{
+            if (currentPerson == null) {
+                currentPerson = Person(
+                    firstNameETI.text.toString(),
+                    lastNameETI.text.toString(),
+                    birthdayETI.text.toString()
+                )
+            } else {
                 currentPerson.firstName = firstNameETI.text.toString()
                 currentPerson.lastName = lastNameETI.text.toString()
                 currentPerson.birthday = birthdayETI.text.toString()
@@ -182,7 +191,7 @@ class EditContactFragment : Fragment() {
         }
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         phoneNumberRV.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newContactAdapterPhone
@@ -198,21 +207,21 @@ class EditContactFragment : Fragment() {
     }
 
     @Subscribe
-    fun getNewPhone(phone: Phone){
+    fun getNewPhone(phone: Phone) {
         var phones = newContactAdapterPhone.list as? ArrayList<Phone>
         phones?.add(phone)
         newContactAdapterPhone.notifyDataSetChanged()
     }
 
     @Subscribe
-    fun getNewEmail(email: Email){
+    fun getNewEmail(email: Email) {
         var emails = newContactAdapterEmail.list as? ArrayList<Email>
         emails?.add(email)
         newContactAdapterPhone.notifyDataSetChanged()
     }
 
     @Subscribe
-    fun getNewAddress(address: Address){
+    fun getNewAddress(address: Address) {
         var addresses = newContactAdapterAddress.list as? ArrayList<Address>
         addresses?.add(address)
         newContactAdapterAddress.notifyDataSetChanged()

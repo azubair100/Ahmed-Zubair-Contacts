@@ -55,7 +55,7 @@ class ListFragment : Fragment() {
         dataBinding.unbind()
     }
 
-    private fun setUpViews(){
+    private fun setUpViews() {
         dataBinding.apply {
             setUpRecyclerView()
             setUpToolBar()
@@ -63,14 +63,14 @@ class ListFragment : Fragment() {
         }
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         listFragmentRV.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = personAdapter
         }
     }
 
-    private fun setUpSearchView(){
+    private fun setUpSearchView() {
         listFragmentSV.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 listViewModel.getPersonsByQuery(query)
@@ -86,7 +86,7 @@ class ListFragment : Fragment() {
         })
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         listViewModel.personList.observe(viewLifecycleOwner, Observer { persons ->
             persons?.let {
                 listFragmentRV.visibility = View.VISIBLE
@@ -94,14 +94,14 @@ class ListFragment : Fragment() {
             }
         })
 
-        listViewModel.listLLoadError.observe(viewLifecycleOwner, Observer {isError ->
-            isError?.let { listFragmentErrTV.visibility = if(it) View.VISIBLE else View.GONE }
+        listViewModel.listLLoadError.observe(viewLifecycleOwner, Observer { isError ->
+            isError?.let { listFragmentErrTV.visibility = if (it) View.VISIBLE else View.GONE }
         })
 
         listViewModel.loading.observe(viewLifecycleOwner, Observer { isLoading ->
             isLoading?.let {
-                listFragmentPB.visibility = if(it) View.VISIBLE else View.GONE
-                if(it){
+                listFragmentPB.visibility = if (it) View.VISIBLE else View.GONE
+                if (it) {
                     listFragmentRV.visibility = View.GONE
                     listFragmentErrTV.visibility = View.GONE
                 }
@@ -109,15 +109,15 @@ class ListFragment : Fragment() {
         })
     }
 
-    private fun setUpToolBar(){
+    private fun setUpToolBar() {
         listFragmentTB.apply {
             inflateMenu(R.menu.list_menu)
             setOnMenuItemClickListener(object : MenuItem.OnMenuItemClickListener,
                 Toolbar.OnMenuItemClickListener {
                 override fun onMenuItemClick(item: MenuItem): Boolean {
-                    when(item.itemId) {
-                        R.id.goToNewContactFragment ->{
-                            view?.let{
+                    when (item.itemId) {
+                        R.id.goToNewContactFragment -> {
+                            view?.let {
                                 val action =
                                     ListFragmentDirections.actionListFragmentToNewEditContactFragment()
                                 action.personId = 0

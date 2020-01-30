@@ -17,31 +17,31 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentNewContactBinding
-import com.example.ahmedzubaircontacts.model.*
+import com.example.ahmedzubaircontacts.model.Address
+import com.example.ahmedzubaircontacts.model.Email
+import com.example.ahmedzubaircontacts.model.Person
+import com.example.ahmedzubaircontacts.model.Phone
 import com.example.ahmedzubaircontacts.util.Util
 import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Bus
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.edit_contact_address.*
-import kotlinx.android.synthetic.main.edit_contact_basic_info.*
-import kotlinx.android.synthetic.main.edit_contact_email.*
-import kotlinx.android.synthetic.main.edit_contact_phone.*
 import kotlinx.android.synthetic.main.fragment_new_contact.*
+import kotlinx.android.synthetic.main.section_person.*
+import kotlinx.android.synthetic.main.section_person_address.*
+import kotlinx.android.synthetic.main.section_person_email.*
+import kotlinx.android.synthetic.main.section_person_phone.*
 
 
 class NewContactFragment : Fragment() {
 
-    private var personId : Long = 0L
+    private var personId: Long = 0L
     private lateinit var newContactViewModel: NewContactViewModel
     private lateinit var newContactAdapterPhone: NewContactAdapter
     private lateinit var newContactAdapterEmail: NewContactAdapter
     private lateinit var newContactAdapterAddress: NewContactAdapter
     private lateinit var dataBinding: FragmentNewContactBinding
-    private var phonesDisplay = arrayListOf<Phone>()
-    private var emailsDisplay = arrayListOf<Email>()
-    private var addressesDisplay = arrayListOf<Address>()
     private var bus = Bus()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,8 @@ class NewContactFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_contact, container, false)
+        dataBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_new_contact, container, false)
         return dataBinding.root
     }
 
@@ -81,7 +82,7 @@ class NewContactFragment : Fragment() {
         dataBinding.unbind()
     }
 
-    private fun setUpViews(){
+    private fun setUpViews() {
         dataBinding.apply {
             makeFirstNameMandatory()
             setUpButtons()
@@ -95,13 +96,13 @@ class NewContactFragment : Fragment() {
         newContactAdapterAddress = NewContactAdapter(arrayListOf())
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         newContactViewModel.contactId.observe(viewLifecycleOwner, Observer {
-            if(it != null || it != 0L){
+            if (it != null || it != 0L) {
                 findNavController().navigate(R.id.action_newEditContactFragment_to_listFragment)
-            }
-            else{
-                Snackbar.make(it, getString(R.string.error_contact_saving), Snackbar.LENGTH_LONG).show()
+            } else {
+                Snackbar.make(it, getString(R.string.error_contact_saving), Snackbar.LENGTH_LONG)
+                    .show()
                 newContactPB.visibility = View.GONE
                 nestedScrollView.visibility = View.VISIBLE
                 cancelBtn.visibility = View.VISIBLE
@@ -109,8 +110,8 @@ class NewContactFragment : Fragment() {
             }
         })
     }
-    
-    private fun setUpRecyclerView(){
+
+    private fun setUpRecyclerView() {
         phoneNumberRV.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = newContactAdapterPhone
@@ -126,8 +127,8 @@ class NewContactFragment : Fragment() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun setUpButtons(){
-        createNewEmailBtn.setOnClickListener{
+    private fun setUpButtons() {
+        createNewEmailBtn.setOnClickListener {
             Util.newEmailAlert(context!!, bus)
         }
         createNewPhoneBtn.setOnClickListener {
@@ -137,13 +138,17 @@ class NewContactFragment : Fragment() {
             Util.newAddressAlert(context!!, bus)
         }
 
-        cancelBtn.setOnClickListener{
+        cancelBtn.setOnClickListener {
             it.findNavController().navigate(R.id.action_newEditContactFragment_to_listFragment)
         }
 
         saveBtn.setOnClickListener {
             hideKeyboard()
-            val person = Person(firstNameETI.text.toString(), lastNameETI.text.toString(), birthdayETI.text.toString())
+            val person = Person(
+                firstNameETI.text.toString(),
+                lastNameETI.text.toString(),
+                birthdayETI.text.toString()
+            )
 
             val phones = newContactAdapterPhone.list as? ArrayList<Phone>
             val emails = newContactAdapterEmail.list as? ArrayList<Email>
@@ -156,12 +161,13 @@ class NewContactFragment : Fragment() {
         }
     }
 
-    private fun makeFirstNameMandatory(){
-        firstNameETI.addTextChangedListener(object: TextWatcher{
+    private fun makeFirstNameMandatory() {
+        firstNameETI.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(s.toString().trim().isNotEmpty()) firstNameETI.error = null
+                if (s.toString().trim().isNotEmpty()) firstNameETI.error = null
                 else firstNameETI.error = getString(R.string.field_required)
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 saveBtn.isEnabled = s.toString().trim().isNotEmpty()
@@ -178,21 +184,21 @@ class NewContactFragment : Fragment() {
 
 
     @Subscribe
-    fun getNewPhone(phone: Phone){
+    fun getNewPhone(phone: Phone) {
         var phones = newContactAdapterPhone.list as? ArrayList<Phone>
         phones?.add(phone)
         newContactAdapterPhone.notifyDataSetChanged()
     }
 
     @Subscribe
-    fun getNewEmail(email: Email){
+    fun getNewEmail(email: Email) {
         var emails = newContactAdapterEmail.list as? ArrayList<Email>
         emails?.add(email)
         newContactAdapterPhone.notifyDataSetChanged()
     }
 
     @Subscribe
-    fun getNewAddress(address: Address){
+    fun getNewAddress(address: Address) {
         var addresses = newContactAdapterAddress.list as? ArrayList<Address>
         addresses?.add(address)
         newContactAdapterAddress.notifyDataSetChanged()

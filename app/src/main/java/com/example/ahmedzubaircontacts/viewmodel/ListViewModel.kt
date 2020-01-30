@@ -11,29 +11,29 @@ class ListViewModel(application: Application) : BaseViewModel(application) {
     val listLLoadError: MutableLiveData<Boolean> = MutableLiveData()
     val loading: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getAllPersons(){
+    fun getAllPersons() {
         loading.value = true
         launch {
             personsRetrieved(ContactDatabase(getApplication()).personDAO().getAllPersons())
         }
     }
 
-    fun getPersonsByQuery(query: String?){
+    fun getPersonsByQuery(query: String?) {
         loading.value = true
         launch {
-            if(!query.isNullOrEmpty()) {
+            if (!query.isNullOrEmpty()) {
                 personsRetrieved(
-                    ContactDatabase(getApplication()).personDAO().searchPersons("%$query%"))
+                    ContactDatabase(getApplication()).personDAO().searchPersons("%$query%")
+                )
             }
         }
     }
 
-    private fun personsRetrieved(persons: List<Person>){
+    private fun personsRetrieved(persons: List<Person>) {
         personList.value = persons
         listLLoadError.value = false
         loading.value = false
     }
-
 
 
 }

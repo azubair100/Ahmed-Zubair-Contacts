@@ -37,9 +37,9 @@
                     android:text="@{person.birthday}"
                     android:textAlignment="center" />
 
-                <include layout="@layout/edit_contact_phone" />
-                <include layout="@layout/edit_contact_email" />
-                <include layout="@layout/edit_contact_address" />
+                <include layout="@layout/section_person_phone" />
+                <include layout="@layout/section_person_email" />
+                <include layout="@layout/section_person_address" />
 
                 <Button
                     android:id="@+id/editContactsBtn"

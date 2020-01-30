@@ -6,21 +6,22 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [Person::class, Phone::class, Email::class, Address::class], version = 1)
-abstract class ContactDatabase: RoomDatabase() {
+abstract class ContactDatabase : RoomDatabase() {
     abstract fun personDAO(): PersonDAO
     abstract fun phoneDAO(): PhoneDAO
     abstract fun emailDAO(): EmailDAO
     abstract fun addressDAO(): AddressDAO
 
-    companion object{
-        @Volatile private var instance: ContactDatabase? = null
+    companion object {
+        @Volatile
+        private var instance: ContactDatabase? = null
         private val LOCK = Any()
 
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK){
-            instance ?: buildDatabase(context).also{ instance = it}
+        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
+            instance ?: buildDatabase(context).also { instance = it }
         }
 
-        private fun buildDatabase(context: Context)= Room.databaseBuilder(
+        private fun buildDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext, ContactDatabase::class.java, "contact_database"
         ).build()
     }

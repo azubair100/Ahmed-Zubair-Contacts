@@ -3,9 +3,9 @@ package com.example.ahmedzubaircontacts.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.io.Serializable
 
-@Entity(tableName = "email",
+@Entity(
+    tableName = "email",
     foreignKeys = [
         ForeignKey(
             onDelete = ForeignKey.CASCADE,
@@ -13,11 +13,13 @@ import java.io.Serializable
             parentColumns = ["personId"],
             childColumns = ["personCreatorId"]
         )
-    ])
+    ]
+)
 data class Email(
-    val personCreatorId : Long,
-    val type : String,
-    val address : String
-    ){
-    @PrimaryKey(autoGenerate = true) var emailId: Long = 0
+    val personCreatorId: Long,
+    val type: String,
+    val address: String
+) {
+    @PrimaryKey(autoGenerate = true)
+    var emailId: Long = 0
 }
