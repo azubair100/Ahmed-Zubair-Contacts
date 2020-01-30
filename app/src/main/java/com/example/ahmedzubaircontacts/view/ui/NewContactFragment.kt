@@ -125,7 +125,10 @@ class NewContactFragment : Fragment() {
         birthdayPick.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
             DatePicker.OnDateChangedListener { datePicker, year, month, day->
                 birthdayTV.text = "${month + 1}-$day-$year"
+                hideKeyboard()
+                birthdayPick.requestFocus()
             })
+
     }
 
     private fun setUpToolBar() {
