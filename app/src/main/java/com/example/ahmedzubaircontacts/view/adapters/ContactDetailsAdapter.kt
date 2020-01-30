@@ -39,17 +39,17 @@ class ContactDetailsAdapter(private val list: ArrayList<Any>):
         when(obj){
             is Phone -> {
                 isPhone = true
-                detail = obj.type + " " + obj.number
+                detail = obj.type + ": " + obj.number
                 holder.view.phoneListener = this
             }
             is Email -> {
                 isEmail = true
-                detail = obj.type + " " + obj.address
+                detail = obj.type + ": " + obj.address
                 holder.view.emailListener = this
             }
             is Address -> {
                 isAddress = true
-                detail = obj.type + " " + obj.street + ", " + obj.city +
+                detail = obj.type + ": " + obj.street + ", " + obj.city +
                         ", " + obj.state + "-" + obj.zip
                 holder.view.addressListener = this
             }

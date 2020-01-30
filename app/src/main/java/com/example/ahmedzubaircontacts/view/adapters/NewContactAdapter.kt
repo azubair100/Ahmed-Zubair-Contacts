@@ -47,18 +47,9 @@ class NewContactAdapter(var list: ArrayList<Any>):
         var detail = ""
 
         when(obj){
-            is Phone -> {
-//                isPhone = true
-                detail = obj.type + " " + obj.number
-//                holder.view.phoneListener = this
-            }
-            is Email -> {
-                detail = obj.type + " " + obj.address
-            }
-            is Address -> {
-                detail = obj.type + " " + obj.street + ", " + obj.city +
-                        ", " + obj.state + "-" + obj.zip
-            }
+            is Phone -> detail = obj.type + ": " + obj.number
+            is Email -> detail = obj.type + ": " + obj.address
+            is Address -> detail = obj.type + ": " + obj.street + ", " + obj.city + ", " + obj.state + "-" + obj.zip
         }
         holder.view.contactDetail = detail
 
