@@ -2,7 +2,6 @@ package com.example.ahmedzubaircontacts.view.ui
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,9 +40,6 @@ class EditContactFragment : Fragment() {
     private lateinit var newContactAdapterEmail: NewContactAdapter
     private lateinit var newContactAdapterAddress: NewContactAdapter
     private lateinit var currentPerson: Person
-    private var phonesDisplay = arrayListOf<Phone>()
-    private var emailsDisplay = arrayListOf<Email>()
-    private var addressesDisplay = arrayListOf<Address>()
     private var bus = Bus()
 
 
@@ -123,11 +119,6 @@ class EditContactFragment : Fragment() {
         })
 
         detailViewModel.phonesLiveData.observe(viewLifecycleOwner, Observer {
-            Log.d(
-                "displayTest",
-                "detailViewModel.phonesLiveData list<phone> size == " + it.size + " <--"
-            )
-
             if (!it.isNullOrEmpty()) {
                 newContactAdapterPhone.updateNewContactPhone(it)
             }
@@ -179,10 +170,10 @@ class EditContactFragment : Fragment() {
                 currentPerson.birthday = birthdayETI.text.toString()
             }
 
-
             val phones = newContactAdapterPhone.list as? ArrayList<Phone>
             val emails = newContactAdapterEmail.list as? ArrayList<Email>
             val addresses = newContactAdapterAddress.list as? ArrayList<Address>
+
             newContactViewModel.saveContact(currentPerson, phones, emails, addresses, true)
             newContactPB.visibility = View.VISIBLE
             nestedScrollView.visibility = View.INVISIBLE
