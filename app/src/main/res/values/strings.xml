@@ -28,4 +28,11 @@
     <string name="error_contact_saving">An error occurred! Contact could not be saved. Please try again.</string>
     <string name="edit_contact">Edit Contact</string>
     <string name="delete_contact">Delete Contact</string>
+    <string name="add_new_phone">Add New Phone</string>
+    <string name="call_permission_title">Call Phone Permission</string>
+    <string name="ask">Ask Me</string>
+    <string name="no">No</string>
+    <string name="call_permission_message">This feature requires your permission to make a call</string>
+    <string name="call">Call</string>
+    <string name="text">Text</string>
 </resources>

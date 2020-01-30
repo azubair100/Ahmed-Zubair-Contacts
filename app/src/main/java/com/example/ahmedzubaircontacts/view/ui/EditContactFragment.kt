@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -20,7 +19,7 @@ import com.example.ahmedzubaircontacts.model.Address
 import com.example.ahmedzubaircontacts.model.Email
 import com.example.ahmedzubaircontacts.model.Person
 import com.example.ahmedzubaircontacts.model.Phone
-import com.example.ahmedzubaircontacts.util.AlertUtil
+import com.example.ahmedzubaircontacts.util.Util
 import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.ContactDetailsViewModel
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
@@ -146,13 +145,13 @@ class EditContactFragment : Fragment() {
     private fun setUpButtons(){
         saveBtn.isEnabled = true
         createNewEmailBtn.setOnClickListener{
-            AlertUtil.newEmailAlert(context!!, bus)
+            Util.newEmailAlert(context!!, bus)
         }
         createNewPhoneBtn.setOnClickListener {
-            AlertUtil.newPhoneAlert(context!!, bus)
+            Util.newPhoneAlert(context!!, bus)
         }
         createNewAddressBtn.setOnClickListener {
-            AlertUtil.newAddressAlert(context!!, bus)
+            Util.newAddressAlert(context!!, bus)
         }
 
         cancelBtn.setOnClickListener{

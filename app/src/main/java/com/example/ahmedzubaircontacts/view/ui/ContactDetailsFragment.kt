@@ -2,7 +2,10 @@ package com.example.ahmedzubaircontacts.view.ui
 
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentContactDetailsBinding
+import com.example.ahmedzubaircontacts.util.Util
 import com.example.ahmedzubaircontacts.view.adapters.ContactDetailsAdapter
 import com.example.ahmedzubaircontacts.viewmodel.ContactDetailsViewModel
 import kotlinx.android.synthetic.main.edit_contact_address.*
@@ -92,14 +96,21 @@ class ContactDetailsFragment : Fragment() {
             phoneNumberRV.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = phonesAdapter
+                phonesAdapter.onPhoneItemClick ={
+                    Util.callOrTextAlert(context, it.number)
+                }
             }
             emailRV.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = emailsAdapter
+                emailsAdapter.onEmailItemClick ={ Util.sendEmail(context, it.address) }
             }
             addressRV.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = addressesAdapter
+                addressesAdapter.onAddressItemClick ={
+                    Util.goToGoogleMaps(context, it.street, it.city)
+                }
             }
 
             editContactsBtn.setOnClickListener {
@@ -114,6 +125,7 @@ class ContactDetailsFragment : Fragment() {
             }
         }
     }
+
 
     @SuppressLint("RestrictedApi")
     private fun removeCreateNewButtons(){

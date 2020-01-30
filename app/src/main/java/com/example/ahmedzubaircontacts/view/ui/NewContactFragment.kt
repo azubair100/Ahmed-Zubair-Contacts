@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ahmedzubaircontacts.R
 import com.example.ahmedzubaircontacts.databinding.FragmentNewContactBinding
 import com.example.ahmedzubaircontacts.model.*
-import com.example.ahmedzubaircontacts.util.AlertUtil
+import com.example.ahmedzubaircontacts.util.Util
 import com.example.ahmedzubaircontacts.view.adapters.NewContactAdapter
 import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -129,13 +128,13 @@ class NewContactFragment : Fragment() {
     @Suppress("UNCHECKED_CAST")
     private fun setUpButtons(){
         createNewEmailBtn.setOnClickListener{
-            AlertUtil.newEmailAlert(context!!, bus)
+            Util.newEmailAlert(context!!, bus)
         }
         createNewPhoneBtn.setOnClickListener {
-            AlertUtil.newPhoneAlert(context!!, bus)
+            Util.newPhoneAlert(context!!, bus)
         }
         createNewAddressBtn.setOnClickListener {
-            AlertUtil.newAddressAlert(context!!, bus)
+            Util.newAddressAlert(context!!, bus)
         }
 
         cancelBtn.setOnClickListener{

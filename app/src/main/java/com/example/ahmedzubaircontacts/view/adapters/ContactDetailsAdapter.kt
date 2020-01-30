@@ -15,12 +15,15 @@ import com.example.ahmedzubaircontacts.view.clicklisteners.EmailClickListener
 import com.example.ahmedzubaircontacts.view.clicklisteners.PhoneClickListener
 
 class ContactDetailsAdapter(private val list: ArrayList<Any>):
-    RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>(),
-    PhoneClickListener, EmailClickListener, AddressClickListener{
+    RecyclerView.Adapter<ContactDetailsAdapter.ContactDetailsViewHolder>(){
 
-    private var isPhone = false
-    private var isEmail = false
-    private var isAddress = false
+    var onPhoneItemClick: ((Phone) -> Unit)? = null
+    var onEmailItemClick: ((Email) -> Unit)? = null
+    var onAddressItemClick: ((Address) -> Unit)? = null
+
+    var isPhone = false
+    var isEmail = false
+    var isAddress = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactDetailsViewHolder =
         ContactDetailsViewHolder(
@@ -40,40 +43,19 @@ class ContactDetailsAdapter(private val list: ArrayList<Any>):
             is Phone -> {
                 isPhone = true
                 detail = obj.type + ": " + obj.number
-                holder.view.phoneListener = this
             }
             is Email -> {
                 isEmail = true
                 detail = obj.type + ": " + obj.address
-                holder.view.emailListener = this
             }
             is Address -> {
                 isAddress = true
                 detail = obj.type + ": " + obj.street + ", " + obj.city +
                         ", " + obj.state + "-" + obj.zip
-                holder.view.addressListener = this
             }
         }
         holder.view.detail = detail
 
-    }
-
-    override fun onPhoneClicked(view: View) {
-        if(isPhone){
-
-        }
-    }
-
-    override fun onEmailClicked(view: View) {
-        if(isEmail){
-
-        }
-    }
-
-    override fun onAddressClicked(view: View) {
-        if(isAddress){
-
-        }
     }
 
     fun updateContactDetailsPhone(newList: List<Phone>) {
@@ -94,7 +76,27 @@ class ContactDetailsAdapter(private val list: ArrayList<Any>):
         notifyDataSetChanged()
     }
 
-    class ContactDetailsViewHolder(var view: RvDisplayContactsGenericRowBinding): RecyclerView.ViewHolder(view.root)
+    inner class ContactDetailsViewHolder(var view: RvDisplayContactsGenericRowBinding): RecyclerView.ViewHolder(view.root){
+        init {
+            itemView.setOnClickListener {
+
+               if(isPhone) {
+                   val phones = list  as? ArrayList<Phone>
+                   onPhoneItemClick?.invoke(phones!![adapterPosition])
+               }
+
+                if(isEmail) {
+                    val emails = list  as? ArrayList<Email>
+                    onEmailItemClick?.invoke(emails!![adapterPosition])
+                }
+
+                if(isAddress) {
+                    val addresses = list  as? ArrayList<Address>
+                    onAddressItemClick?.invoke(addresses!![adapterPosition])
+                }
+            }
+        }
+    }
 
 
 }
