@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -32,6 +33,8 @@ import kotlinx.android.synthetic.main.section_person.*
 import kotlinx.android.synthetic.main.section_person_address.*
 import kotlinx.android.synthetic.main.section_person_email.*
 import kotlinx.android.synthetic.main.section_person_phone.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("UNCHECKED_CAST")
 class EditContactFragment : Fragment() {
@@ -138,7 +141,18 @@ class EditContactFragment : Fragment() {
         dataBinding.apply {
             setUpButtons()
             setUpToolBar()
+            setUpDatePicker()
         }
+    }
+
+    private fun setUpDatePicker(){
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        birthdayPick.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(
+            Calendar.DAY_OF_MONTH),
+            DatePicker.OnDateChangedListener { datePicker, year, month, day->
+                birthdayTV.text = "${month + 1}-$day-$year"
+            })
     }
 
     private fun setUpToolBar() {
@@ -185,12 +199,12 @@ class EditContactFragment : Fragment() {
                 currentPerson = Person(
                     firstNameETI.text.toString(),
                     lastNameETI.text.toString(),
-                    birthdayETI.text.toString()
+                    birthdayTV.text.toString()
                 )
             } else {
                 currentPerson.firstName = firstNameETI.text.toString()
                 currentPerson.lastName = lastNameETI.text.toString()
-                currentPerson.birthday = birthdayETI.text.toString()
+                currentPerson.birthday = birthdayTV.text.toString()
             }
 
             val phones = newContactAdapterPhone.list as? ArrayList<Phone>

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.DatePicker
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -30,12 +31,13 @@ import com.example.ahmedzubaircontacts.viewmodel.NewContactViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.otto.Bus
 import com.squareup.otto.Subscribe
-import kotlinx.android.synthetic.main.fragment_contact_details_app_bar.*
 import kotlinx.android.synthetic.main.fragment_new_contact.*
 import kotlinx.android.synthetic.main.section_person.*
 import kotlinx.android.synthetic.main.section_person_address.*
 import kotlinx.android.synthetic.main.section_person_email.*
 import kotlinx.android.synthetic.main.section_person_phone.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class NewContactFragment : Fragment() {
@@ -92,6 +94,7 @@ class NewContactFragment : Fragment() {
             setUpButtons()
             setUpRecyclerView()
             setUpToolBar()
+            setUpDatePicker()
         }
     }
 
@@ -114,6 +117,15 @@ class NewContactFragment : Fragment() {
                 saveBtn.visibility = View.VISIBLE
             }
         })
+    }
+
+    private fun setUpDatePicker(){
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        birthdayPick.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
+            DatePicker.OnDateChangedListener { datePicker, year, month, day->
+                birthdayTV.text = "${month + 1}-$day-$year"
+            })
     }
 
     private fun setUpToolBar() {
@@ -172,7 +184,7 @@ class NewContactFragment : Fragment() {
             val person = Person(
                 firstNameETI.text.toString(),
                 lastNameETI.text.toString(),
-                birthdayETI.text.toString()
+                birthdayTV.text.toString()
             )
 
             val phones = newContactAdapterPhone.list as? ArrayList<Phone>
