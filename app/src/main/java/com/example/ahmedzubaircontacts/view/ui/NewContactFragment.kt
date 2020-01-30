@@ -231,7 +231,7 @@ class NewContactFragment : Fragment() {
     fun getNewEmail(email: Email) {
         var emails = newContactAdapterEmail.list as? ArrayList<Email>
         emails?.add(email)
-        newContactAdapterPhone.notifyDataSetChanged()
+        newContactAdapterEmail.notifyDataSetChanged()
     }
 
     @Subscribe
